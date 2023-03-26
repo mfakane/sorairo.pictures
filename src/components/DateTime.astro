@@ -1,0 +1,17 @@
+---
+export interface Props {
+  date: Date | undefined;
+}
+
+const { date } = Astro.props;
+---
+
+{
+  date ? (
+    <time class="datetime" datetime={date.toISOString()}>
+      {`${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`}
+    </time>
+  ) : (
+    "Permalink"
+  )
+}

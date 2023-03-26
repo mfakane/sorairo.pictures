@@ -1,0 +1,47 @@
+---
+import { getCollection } from "astro:content";
+import Article from "@/components/Article.astro";
+import Layout from "@/layouts/Layout.astro";
+import { getArticleSummaries } from "@/models/ArticleSummary";
+import { SITE_TITLE } from "@/config";
+import Portrait from "./about/fumika.jpg";
+
+const posts = await getArticleSummaries(await getCollection("updates"));
+
+const columns = 3;
+---
+
+<Layout title={SITE_TITLE}>
+  <main>
+    <article class="profile">
+      <img class="portrait" src={Portrait} />
+      <section>
+        <h2>I'm @mfakane.</h2>
+        <p>
+          ミーフォ茜といいます。
+        </p>
+        <p>
+          <a href="/about/">私について</a>
+        </p>
+      </section>
+    </article>
+    <div class="showcase">
+      {
+        [...Array(columns)].map((_, column) => (
+          <div class="showcase-column">
+            {posts
+              .filter((_, i) => i % columns === column)
+              .map((post) => (
+                <Article
+                  title={post.title}
+                  date={post.date}
+                  permalink={post.permalink}
+                  source={post.source}
+                  set:html={post.summary} />
+              ))}
+          </div>
+        ))
+      }
+    </div>
+  </main>
+</Layout>

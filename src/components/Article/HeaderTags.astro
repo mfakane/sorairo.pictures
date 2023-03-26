@@ -1,0 +1,17 @@
+---
+export interface Props {
+  tags: readonly string[];
+}
+
+const { tags } = Astro.props;
+---
+
+{
+  tags.length && (
+    <ul class="tags">
+      {tags.map((x) => (
+        <li>{x}</li>
+      ))}
+    </ul>
+  )
+}

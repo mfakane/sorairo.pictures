@@ -1,0 +1,58 @@
+---
+import type { MarkdownHeading, MarkdownLayoutProps } from "astro";
+import Article from "@/components/Article.astro";
+import Layout from "./Layout.astro";
+import TableOfContents from "@/components/TableOfContents.astro";
+
+type Props = MarkdownLayoutProps<{
+  title: string;
+  date: string;
+  updated: string;
+  category: string;
+  tags: readonly string[];
+}>;
+
+type MarkdownHeadingWithChildren = MarkdownHeading & {
+  children: MarkdownHeadingWithChildren[];
+};
+
+const { frontmatter, url, headings } = Astro.props;
+
+const headingsWithChildren = headings.reduce<MarkdownHeadingWithChildren[]>(
+  (acc, x) => {
+    if (x.depth === 1) {
+      acc.push({ ...x, children: [] });
+    } else {
+      const parent = acc[acc.length - 1];
+      if (parent && x.depth > parent.depth) {
+        parent.children.push({ ...x, children: [] });
+      } else {
+        acc.push({ ...x, children: [] });
+      }
+    }
+    return acc;
+  },
+  []
+);
+---
+
+<Layout title={frontmatter.title}>
+  <main>
+    <Article
+      title={frontmatter.title}
+      date={new Date(frontmatter.date)}
+      tags={frontmatter.tags}
+      permalink={url}
+    >
+      <slot />
+    </Article>
+  </main>
+  <aside>
+    <div class="sticky">
+      <section class="toc">
+        <h2>Contents</h2>
+        <TableOfContents items={headingsWithChildren} />
+      </section>
+    </div>
+  </aside>
+</Layout>

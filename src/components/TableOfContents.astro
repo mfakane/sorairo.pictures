@@ -1,0 +1,26 @@
+---
+interface Item {
+  text: string;
+  slug?: string;
+  children: readonly Item[];
+}
+
+export interface Props {
+  items: readonly Item[];
+}
+
+const { items } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <ol>
+      {items.map((x) => (
+        <li>
+          {x.slug ? <a href={`#${x.slug}`}>{x.text}</a> : x.text}
+          {x.children.length > 0 && <Astro.self items={x.children} />}
+        </li>
+      ))}
+    </ol>
+  )
+}

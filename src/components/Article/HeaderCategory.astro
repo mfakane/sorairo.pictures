@@ -1,0 +1,36 @@
+---
+import { getUrlFromArticleSource, ArticleSource } from "@/models/ArticleSource";
+
+export interface Props {
+  source?: ArticleSource;
+  category?: string;
+}
+
+const { source, category } = Astro.props;
+const icon = (() => {
+  switch (source) {
+    case "GitHub":
+    case "Gist":
+      return "fab fa-github";
+    default:
+      return "fas fa-folder";
+  }
+})();
+---
+
+{
+  source?.length && (
+    <a class="category" href={getUrlFromArticleSource(source)}>
+      <i class={`${icon} fa-fw`} aria-hidden="true" />
+      {source}
+    </a>
+  )
+}
+{
+  category?.length && (
+    <a class="category">
+      <i class="fas fa-folder fa-fw" aria-hidden="true" />
+      {category}
+    </a>
+  )
+}
