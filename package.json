@@ -12,11 +12,15 @@
     "type-check": "astro check"
   },
   "dependencies": {
-    "@astrojs/mdx": "^0.15.0",
-    "astro": "^2.0.1"
+    "@astrojs/mdx": "^0.19.0",
+    "apitable": "^0.8.3",
+    "astro": "^2.3.2",
+    "jsdom": "^21.1.2",
+    "remark-breaks": "^3.0.2"
   },
   "devDependencies": {
-    "@types/node": "^18.11.18",
-    "typescript": "^4.9.4"
+    "@types/jsdom": "^21.1.1",
+    "@types/node": "^18.16.3",
+    "typescript": "^5.0.4"
   }
 }

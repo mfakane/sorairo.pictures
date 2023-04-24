@@ -1,4 +1,4 @@
-export type ArticleSource = "Blog" | "GitHub" | "Gist" | "Log" | undefined;
+export type ArticleSource = "Blog" | "GitHub" | "Gist" | "Log" | "Twitter" | undefined;
 
 export function getUrlFromArticleSource(category: ArticleSource) {
   switch (category) {
@@ -10,6 +10,8 @@ export function getUrlFromArticleSource(category: ArticleSource) {
       return "https://gist.github.com/mfakane";
     case "Log":
       return "https://log.sorairo.pictures/"
+    case "Twitter":
+      return "https://twitter.com/mfakane";
     default:
       return undefined;
   }
@@ -27,6 +29,8 @@ export function getArticleSourceFromUrl(url: string): ArticleSource {
       return "Gist";
     case "log.sorairo.pictures":
       return "Log";
+    case "twitter.com":
+      return "Twitter";
     default:
       return undefined;
   }

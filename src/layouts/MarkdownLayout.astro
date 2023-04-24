@@ -7,16 +7,14 @@ import TableOfContents from "@/components/TableOfContents.astro";
 type Props = MarkdownLayoutProps<{
   title: string;
   date: string;
-  updated: string;
-  category: string;
-  tags: readonly string[];
+  updated?: string;
 }>;
 
 type MarkdownHeadingWithChildren = MarkdownHeading & {
   children: MarkdownHeadingWithChildren[];
 };
 
-const { frontmatter, url, headings } = Astro.props;
+const { frontmatter, headings } = Astro.props;
 
 const headingsWithChildren = headings.reduce<MarkdownHeadingWithChildren[]>(
   (acc, x) => {
@@ -39,20 +37,23 @@ const headingsWithChildren = headings.reduce<MarkdownHeadingWithChildren[]>(
 <Layout title={frontmatter.title}>
   <main>
     <Article
-      title={frontmatter.title}
       date={new Date(frontmatter.date)}
-      tags={frontmatter.tags}
-      permalink={url}
+      updated={frontmatter.updated ? new Date(frontmatter.updated) : undefined}
     >
+      <h1 slot="title">{frontmatter.title}</h1>
       <slot />
     </Article>
   </main>
-  <aside>
-    <div class="sticky">
-      <section class="toc">
-        <h2>Contents</h2>
-        <TableOfContents items={headingsWithChildren} />
-      </section>
-    </div>
-  </aside>
+  {
+    headingsWithChildren.length > 0 && (
+      <aside>
+        <div class="sticky">
+          <section class="toc">
+            <h2>Contents</h2>
+            <TableOfContents items={headingsWithChildren} />
+          </section>
+        </div>
+      </aside>
+    )
+  }
 </Layout>

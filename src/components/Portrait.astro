@@ -1,0 +1,46 @@
+---
+import { Image } from "astro:assets";
+
+export interface Props {
+  portrait: PortraitItem | readonly PortraitItem[];
+}
+
+interface ImageMetadata {
+	src: string;
+	width: number;
+	height: number;
+}
+
+type PortraitItem = ImageMetadata | { image: ImageMetadata; href: string };
+
+const { portrait } = Astro.props;
+const items = (Array.isArray(portrait) ? portrait : [portrait]).map((item) =>
+  item.image ? item : { image: item, href: "" }
+);
+---
+
+<p>
+  {
+    items.map((portrait) =>
+      portrait.href ? (
+        <a href={portrait.href}>
+          <Image
+            src={portrait.image.src}
+            width={128}
+            height={128}
+            alt={portrait.href.split("/").at(-1)}
+            class="portrait"
+          />
+        </a>
+      ) : (
+        <Image
+          src={portrait.image.src}
+          width={128}
+          height={128}
+          alt=""
+          class="portrait"
+        />
+      )
+    )
+  }
+</p>

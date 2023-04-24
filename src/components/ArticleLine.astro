@@ -5,14 +5,13 @@ import ArticleHeaderTags from "./Article/HeaderTags.astro";
 import type { ArticleSource } from "@/models/ArticleSource";
 
 export interface Props {
-  title?: string | undefined;
   date?: Date | undefined;
   permalink?: string | undefined;
   source?: ArticleSource | undefined;
   tags?: readonly string[];
 }
 
-const { title, date, permalink, source, tags } = Astro.props;
+const { date, permalink, source, tags } = Astro.props;
 ---
 
 <article class="article-title">
@@ -25,15 +24,7 @@ const { title, date, permalink, source, tags } = Astro.props;
       <DateTime date={date} />
     )
   }
-  {
-    title && permalink ? (
-      <h1>
-        <a href={permalink}>{title}</a>
-      </h1>
-    ) : (
-      <h1>{title}</h1>
-    )
-  }
+  <slot name="title" />
   {source && <ArticleHeaderCategory category={source} />}
   {tags && <ArticleHeaderTags tags={tags} />}
 </article>

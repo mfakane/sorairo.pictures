@@ -1,0 +1,102 @@
+---
+import type { MarkdownHeading } from "astro";
+import Article from "@/components/Article.astro";
+import Portrait from "@/components/Portrait.astro";
+import Layout from "./Layout.astro";
+import TableOfContents from "@/components/TableOfContents.astro";
+import type { CollectionEntry } from "astro:content";
+import { APITable } from "apitable";
+import type { UpdatesFields } from "@/models/ApiTable";
+import { getArticleSourceFromUrl } from "@/models/ArticleSource";
+
+export interface Props {
+  entry: CollectionEntry<"blog">;
+}
+
+type MarkdownHeadingWithChildren = MarkdownHeading & {
+  children: MarkdownHeadingWithChildren[];
+};
+
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
+
+const headingsWithChildren = headings.reduce<MarkdownHeadingWithChildren[]>(
+  (acc, x) => {
+    if (x.depth === 1) {
+      acc.push({ ...x, children: [] });
+    } else {
+      const parent = acc[acc.length - 1];
+      if (parent && x.depth > parent.depth) {
+        parent.children.push({ ...x, children: [] });
+      } else {
+        acc.push({ ...x, children: [] });
+      }
+    }
+    return acc;
+  },
+  []
+);
+
+const apitable = new APITable({
+  token: import.meta.env.APITABLE_ACCESS_TOKEN,
+  fieldKey: "name",
+});
+const datasheet = apitable.datasheet(
+  import.meta.env.APITABLE_UPDATES_DATASHEET_ID
+);
+const updatesView = await datasheet.records.query({
+  viewId: import.meta.env.APITABLE_UPDATES_VIEW_ID,
+  filterByFormula: `{parent} != "" && {parent} = "${entry.slug}"`,
+});
+
+const updates = (updatesView.data?.records ?? [])
+  .map((x) => x.fields as UpdatesFields)
+  .map((x) => ({
+    title: x.title ?? "",
+    date: x.date ? new Date(x.date) : undefined,
+    permalink: x.href?.text,
+    source: x.href ? getArticleSourceFromUrl(x.href.text) : undefined,
+    summary: x.body ?? "",
+  }));
+---
+
+<Layout title={entry.data.title}>
+  <main>
+    <Article date={entry.data.date} updated={entry.data.updated}>
+      <h1 slot="title">{entry.data.title}</h1>
+      {entry.data.portrait && <Portrait portrait={entry.data.portrait} />}
+      <Content />
+    </Article>
+    {
+      updates.length > 0 && (
+        <article>
+          <h2>更新情報</h2>
+          {updates.map((update) => (
+            <Article
+              date={update.date}
+              permalink={update.permalink}
+              source={update.source}
+              set:html={update.summary}
+            >
+              <h3 slot="title">
+                <a href={update.permalink}>{update.title}</a>
+              </h3>
+            </Article>
+          ))}
+        </article>
+      )
+    }
+  </main>
+  {
+    headingsWithChildren.length > 0 && (
+      <aside>
+        <div class="sticky">
+          <section class="toc">
+            <h2>Contents</h2>
+            <TableOfContents items={headingsWithChildren} />
+          </section>
+        </div>
+      </aside>
+    )
+  }
+</Layout>

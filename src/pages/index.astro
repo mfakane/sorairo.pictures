@@ -1,12 +1,34 @@
 ---
-import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
 import Article from "@/components/Article.astro";
 import Layout from "@/layouts/Layout.astro";
-import { getArticleSummaries } from "@/models/ArticleSummary";
 import { SITE_TITLE } from "@/config";
 import Portrait from "./about/fumika.jpg";
+import { getArticleSourceFromUrl } from "@/models/ArticleSource";
+import { APITable } from "apitable";
+import type { UpdatesFields } from "@/models/ApiTable";
 
-const posts = await getArticleSummaries(await getCollection("updates"));
+const apitable = new APITable({
+  token: import.meta.env.APITABLE_ACCESS_TOKEN,
+  fieldKey: "name",
+});
+const datasheet = apitable.datasheet(
+  import.meta.env.APITABLE_UPDATES_DATASHEET_ID
+);
+const updatesView = await datasheet.records.query({
+  viewId: import.meta.env.APITABLE_UPDATES_VIEW_ID,
+});
+
+const updates = (updatesView.data?.records ?? [])
+  .map((x) => x.fields as UpdatesFields)
+  .map((x) => ({
+    title: x.title ?? "",
+    date: x.date ? new Date(x.date) : undefined,
+    permalink: x.href?.text,
+    source: x.href ? getArticleSourceFromUrl(x.href.text) : undefined,
+    summary: x.body ?? "",
+    parent: x.parent,
+  }));
 
 const columns = 3;
 ---
@@ -14,34 +36,44 @@ const columns = 3;
 <Layout title={SITE_TITLE}>
   <main>
     <article class="profile">
-      <img class="portrait" src={Portrait} />
+      <Image class="portrait" src={Portrait.src} width={128} height={128} alt="mfakane" />
       <section>
         <h2>I'm @mfakane.</h2>
-        <p>
-          ミーフォ茜といいます。
-        </p>
+        <p>ミーフォ茜といいます。</p>
         <p>
           <a href="/about/">私について</a>
         </p>
       </section>
     </article>
-    <div class="showcase">
-      {
-        [...Array(columns)].map((_, column) => (
-          <div class="showcase-column">
-            {posts
-              .filter((_, i) => i % columns === column)
-              .map((post) => (
-                <Article
-                  title={post.title}
-                  date={post.date}
-                  permalink={post.permalink}
-                  source={post.source}
-                  set:html={post.summary} />
-              ))}
-          </div>
-        ))
-      }
-    </div>
+    <article>
+      <h2>更新情報</h2>
+      <div class="showcase">
+        {
+          [...Array(columns)].map((_, column) => (
+            <div class="showcase-column">
+              {updates
+                .filter((_, i) => i % columns === column)
+                .map((update) => (
+                  <Article
+                    date={update.date}
+                    permalink={update.permalink}
+                    source={update.source}
+                    set:html={update.summary}
+                  >
+                    <h3 slot="title">
+                      <a href={update.permalink}>{update.title}</a>
+                    </h3>
+                    {update.parent && (
+                      <a slot="footer" href={`/${update.parent}`}>
+                        詳細 →
+                      </a>
+                    )}
+                  </Article>
+                ))}
+            </div>
+          ))
+        }
+      </div>
+    </article>
   </main>
 </Layout>
