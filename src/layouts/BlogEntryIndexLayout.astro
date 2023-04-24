@@ -1,0 +1,35 @@
+---
+import Article from "@/components/Article.astro";
+import Layout from "./Layout.astro";
+import type { CollectionEntry } from "astro:content";
+
+export interface Props {
+  category: string;
+  entries: readonly CollectionEntry<"blog">[];
+}
+
+const { category, entries } = Astro.props;
+const articles = [];
+
+for (const entry of entries) {
+  const { Content } = await entry.render();
+  articles.push({ slug: entry.slug, data: entry.data, Content });
+}
+
+articles.sort((x, y) => (x.data.updated ?? x.data.date) < (y.data.updated ?? y.data.date) ? 1 : -1);
+---
+
+<Layout title={category}>
+  <main>
+    {articles.map(article => (
+      <Article
+        title={article.data.title}
+        date={article.data.date}
+        updated={article.data.updated}
+        permalink={`/${article.slug}`}
+      >
+        <article.Content />
+      </Article>
+    ))}
+  </main>
+</Layout>

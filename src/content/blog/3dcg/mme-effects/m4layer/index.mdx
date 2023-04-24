@@ -1,0 +1,26 @@
+---
+title: M4Layer
+date: 2014-01-24 00:00:00
+updated: 2022-10-18 01:11:00
+---
+
+import DownloadLink from "@/components/DownloadLink.astro";
+import FaInline from "@/components/FaInline.astro";
+import Thumbnail from "./thumbnail.png";
+import Thumbnail2 from "./thumbnail2.png";
+
+<p>
+  <a href="http://seiga.nicovideo.jp/seiga/im2077858">
+    <img class="portrait" src={Thumbnail} width="128" height="128" />
+  </a>
+  <a href="https://twitter.com/mfakane/status/1563691329703788544">
+    <img class="portrait" src={Thumbnail2} width="128" height="128" />
+  </a>
+</p>
+
+<DownloadLink path="mme-effects/M4Layer/" />
+<FaInline type="fas" icon="check" /> MME, MMM 対応
+
+- 覆い焼き、ソフトライト、オーバーレイなど、画像編集ソフトにあるレイヤーの合成モードのような機能を実現するポストエフェクト (M4Layer) およびシェーダエフェクト (M4LayerShader) のセットです。
+- RT (LayerRT / BelowRT / AboveRT) 上でポストエフェクトやシェーダを適用することで、それより下にある RT に描画結果を合成できます。
+- マスク機能を有効にすることで部分的に適用することもできます。

@@ -1,0 +1,17 @@
+---
+export interface Props {
+  source?: "download" | "github";
+  path: string;
+}
+
+const { source, path } = { source: "download", ...Astro.props};
+
+const href = source === "download"
+  ? `https://download.sorairo.pictures/${path}`
+  : `https://github.com/mfakane/${path}`;
+---
+
+<a href={href}>
+  <i class={`fas fa-download fa-fw`} aria-hidden="true" />
+  Download
+</a>

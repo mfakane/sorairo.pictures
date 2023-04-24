@@ -1,19 +1,20 @@
 ---
-import type { MarkdownHeading, MarkdownLayoutProps } from "astro";
+import type { MarkdownHeading } from "astro";
 import Article from "@/components/Article.astro";
 import Layout from "./Layout.astro";
 import TableOfContents from "@/components/TableOfContents.astro";
+import type { CollectionEntry } from "astro:content";
 
-type Props = MarkdownLayoutProps<{
-  title: string;
-  date: string;
-}>;
+export interface Props {
+  entry: CollectionEntry<"blog">;
+}
 
 type MarkdownHeadingWithChildren = MarkdownHeading & {
   children: MarkdownHeadingWithChildren[];
 };
 
-const { frontmatter, headings } = Astro.props;
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
 
 const headingsWithChildren = headings.reduce<MarkdownHeadingWithChildren[]>(
   (acc, x) => {
@@ -33,14 +34,14 @@ const headingsWithChildren = headings.reduce<MarkdownHeadingWithChildren[]>(
 );
 ---
 
-<Layout title={frontmatter.title}>
+<Layout title={entry.data.title}>
   <main>
     <Article
-      title={frontmatter.title}
-      date={new Date(frontmatter.date)}
-      updated={Astro.props.updated ? new Date(Astro.props.updated) : undefined}
+      title={entry.data.title}
+      date={entry.data.date}
+      updated={entry.data.updated}
     >
-      <slot />
+      <Content />
     </Article>
   </main>
   {headingsWithChildren.length > 0 &&

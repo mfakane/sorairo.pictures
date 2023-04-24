@@ -1,12 +1,27 @@
 ---
-import { getCollection } from "astro:content";
 import Article from "@/components/Article.astro";
 import Layout from "@/layouts/Layout.astro";
-import { getArticleSummaries } from "@/models/ArticleSummary";
 import { SITE_TITLE } from "@/config";
 import Portrait from "./about/fumika.jpg";
+import Feedly, { Origin } from "@/models/Feedly";
+import { getArticleSourceFromUrl } from "@/models/ArticleSource";
 
-const posts = await getArticleSummaries(await getCollection("updates"));
+const feedly = new Feedly(import.meta.env.FEEDLY_ACCESS_TOKEN);
+const contents = await feedly.getStreamContents(import.meta.env.FEEDLY_BOARD_ID);
+//const posts = await getArticleSummaries(await getCollection("updates"));
+const getTitleFromOrigin = (origin: Origin) => {
+  const githubReleases = /^Release notes from (.+)$/;
+  if (githubReleases.test(origin.title))
+    return origin.title.match(githubReleases)?.at(1) ?? origin.title;
+  return origin.title;
+};
+const posts = contents.items.map(x => ({
+  title: `${getTitleFromOrigin(x.origin)} ${x.title}`,
+  date: new Date(x.published),
+  permalink: x.canonicalUrl,
+  source: getArticleSourceFromUrl(x.canonicalUrl),
+  summary: x.content.content,
+}));
 
 const columns = 3;
 ---
@@ -25,23 +40,26 @@ const columns = 3;
         </p>
       </section>
     </article>
-    <div class="showcase">
-      {
-        [...Array(columns)].map((_, column) => (
-          <div class="showcase-column">
-            {posts
-              .filter((_, i) => i % columns === column)
-              .map((post) => (
-                <Article
-                  title={post.title}
-                  date={post.date}
-                  permalink={post.permalink}
-                  source={post.source}
-                  set:html={post.summary} />
-              ))}
-          </div>
-        ))
-      }
-    </div>
+    <article>
+      <h2>更新情報</h2>
+      <div class="showcase">
+        {
+          [...Array(columns)].map((_, column) => (
+            <div class="showcase-column">
+              {posts
+                .filter((_, i) => i % columns === column)
+                .map((post) => (
+                  <Article
+                    title={post.title}
+                    date={post.date}
+                    permalink={post.permalink}
+                    source={post.source}
+                    set:html={post.summary} />
+                ))}
+            </div>
+          ))
+        }
+      </div>
+    </article>
   </main>
 </Layout>

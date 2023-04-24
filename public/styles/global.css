@@ -52,12 +52,13 @@ body {
     color: inherit;
 }
 
-h1 {
+h1,
+h2 {
     font-size: 24px;
     line-height: 32px;
 }
 
-h2 {
+h3 {
     font-size: 20px;
 }
 
@@ -70,7 +71,7 @@ a:is(:hover, :active) {
     color: dodgerblue;
 }
 
-:is(p, ul, ol, blockquote, figure) {
+:is(p, blockquote, figure) {
     margin: 16px 0;
     text-align: justify;
 }
@@ -298,6 +299,9 @@ body>aside .sticky {
     -webkit-line-clamp: 5;
 }
 
+.showcase-column article:first-child {
+    margin-top: 0;
+}
 article {
     margin: 16px 0;
 }
@@ -319,6 +323,7 @@ article header {
         "date category tags"
         "heading heading heading"
         / auto auto 1fr;
+    margin-bottom: 16px;
 }
 
 .article-title {
@@ -352,18 +357,14 @@ article header {
     grid-area: category;
 }
 
-:is(article header, .article-title) h1 {
+:is(article header, .article-title) :is(h1, h2, h3, h4, h5, h6) {
     margin: 0;
     grid-area: heading;
 }
 
-.article-title h1 {
+.article-title :is(h1, h2, h3, h4, h5, h6) {
     font-size: inherit;
     line-height: inherit;
-}
-
-.article-content img:first-child {
-    margin-top: 16px;
 }
 
 aside :is(h1, h2, h3, h4, h5, h6) {
@@ -414,4 +415,18 @@ code,
 
 code {
     padding: 2px;
+}
+a.card {
+    margin: 16px 0;
+    padding: 16px;
+    border: 1px solid #dddddd;
+}
+
+a.card .card-title {
+    margin-bottom: 16px;
+    font-size: 20px;
+}
+
+a.card .card-description {
+    margin: 0;
 }

@@ -1,0 +1,39 @@
+---
+import { CollectionEntry, getCollection } from "astro:content";
+import BlogEntryLayout from "@/layouts/BlogEntryLayout.astro";
+import BlogEntryIndexLayout from "@/layouts/BlogEntryIndexLayout.astro";
+
+export async function getStaticPaths(): Promise<{ params: { slug: string }, props: Props }[]> {
+  const blogEntries = await getCollection("blog");
+  const blogCategories = blogEntries
+    .map(entry => {
+      const lastSlash = entry.slug.lastIndexOf("/");
+      return lastSlash >= 0 ? entry.slug.slice(0, lastSlash) : null;
+    })
+    .filter(x => x !== null);
+
+  return blogEntries
+    .map(entry => ({
+      params: { slug: entry.slug as string },
+      props: { entry } as Props,
+    }))
+    .concat(blogCategories.map(category => ({
+      params: { slug: category as string },
+      props: {
+        category,
+        entries: blogEntries.filter(entry => entry.slug.startsWith(category + "/")),
+      } as Props,
+    })));
+}
+
+export interface Props {
+  category?: string;
+  entry?: CollectionEntry<"blog">;
+  entries?: readonly CollectionEntry<"blog">[];
+}
+
+const { category, entry, entries } = Astro.props;
+---
+
+{entry && <BlogEntryLayout entry={entry} />}
+{category && entries && <BlogEntryIndexLayout category={category} entries={entries} />}
