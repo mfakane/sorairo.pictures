@@ -295,10 +295,28 @@ body>aside .sticky {
 }
 
 .showcase article .article-content {
-    display: -webkit-box;
+    position: relative;
+    display: block;
     text-overflow: ellipsis;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5;
+    word-break: break-all;
+    overflow: hidden;
+    max-height: calc(5em * 1.5);
+    padding-bottom: calc(1em * 1.5);
+}
+    
+.showcase article .article-content::after {
+    position: absolute;
+    display: block;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(1em * 1.75);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+    content: "";
+}
+    
+.showcase article footer {
+    margin-top: 0;
 }
 
 .showcase-column article:first-child {
@@ -373,6 +391,7 @@ article header {
 article footer {
     margin-top: 16px;
 }
+
 aside :is(h1, h2, h3, h4, h5, h6) {
     margin: 16px 0 8px 0;
     font-size: 90%;
