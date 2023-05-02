@@ -17,7 +17,7 @@ const { date, updated } = Astro.props;
         .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`}
       {updated && updated > date && (
         <span class="datetime-updated">
-          <FaInline type="fas" icon="history" />
+          <FaInline type="fas" icon="rotate" />
           {`${updated.getFullYear()}-${(updated.getMonth() + 1)
             .toString()
             .padStart(2, "0")}-${updated
