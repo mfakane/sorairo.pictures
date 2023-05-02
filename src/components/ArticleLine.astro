@@ -14,7 +14,7 @@ export interface Props {
 const { date, permalink, source, tags } = Astro.props;
 ---
 
-<article class="article-title">
+<article class="article-title oneline">
   {
     permalink ? (
       <a class="permalink" href={permalink}>

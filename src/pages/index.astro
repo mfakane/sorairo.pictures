@@ -24,10 +24,11 @@ const updates = (updatesView.data?.records ?? [])
   .map((x) => ({
     title: x.title ?? "",
     date: x.date ? new Date(x.date) : undefined,
-    permalink: x.href?.text,
+    permalink: x.href,
     source: x.href ? getArticleSourceFromUrl(x.href.text) : undefined,
     summary: x.body ?? "",
     parent: x.parent,
+    image: x.image,
   }));
 
 const columns = 3;
@@ -58,10 +59,11 @@ const columns = 3;
                     date={update.date}
                     permalink={update.permalink}
                     source={update.source}
+                    image={update.image}
                     set:html={update.summary}
                   >
                     <h3 slot="title">
-                      <a href={update.permalink}>{update.title}</a>
+                      <a href={typeof update.permalink === "string" ? update.permalink : update.permalink?.text}>{update.title}</a>
                     </h3>
                     {update.parent && (
                       <a slot="footer" href={`/${update.parent}`}>

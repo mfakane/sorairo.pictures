@@ -7,28 +7,37 @@ import type { ArticleSource } from "@/models/ArticleSource";
 export interface Props {
   date?: Date | undefined;
   updated?: Date | undefined;
-  permalink?: string | undefined;
+  permalink?: URL | undefined;
   source?: ArticleSource | undefined;
   tags?: readonly string[];
+  image?: Image | undefined;
 }
 
-const { date, updated, permalink, source, tags } = Astro.props;
+type Image = string | { title: string; text: string; };
+type URL = string | { title: string; text: string; favicon: string; }
+
+const { date, updated, permalink, source, tags, image } = Astro.props;
 ---
 
 <article>
-  <header>
-    {
-      permalink ? (
-        <a class="permalink" href={permalink}>
+  <header class:list={{ "with-image": !!image }}>
+    <div class="article-title">
+      <slot name="title" />
+      {
+        permalink ? (
+          <a class="permalink" href={typeof permalink === "string" ? permalink : permalink.text}>
+            <DateTime date={date} updated={updated} />
+          </a>
+        ) : (
           <DateTime date={date} updated={updated} />
-        </a>
-      ) : (
-        <DateTime date={date} updated={updated} />
-      )
-    }
-    <slot name="title" />
-    {source && <ArticleHeaderCategory source={source} />}
-    {tags && <ArticleHeaderTags tags={tags} />}
+        )
+      }
+      {source && <ArticleHeaderCategory source={source} />}
+      {tags && <ArticleHeaderTags tags={tags} />}
+    </div>
+
+    {typeof image === "string" && <img src={image} alt="" />}
+    {typeof image === "object" && <img src={image.text} alt={image.title} />}
   </header>
   <div class="article-content">
     <slot />

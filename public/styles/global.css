@@ -333,26 +333,53 @@ article+:is(article, #related) {
     border-top: 1px solid;
 }
 
-:is(article header, .article-title) {
-    font-size: 90%;
-    gap: 4px;
-}
-
-article header {
+.article-title {
     display: grid;
     grid-template:
         "date category tags"
         "heading heading heading"
         / auto auto 1fr;
+    font-size: 90%;
+    gap: 4px;
+}
+
+.article-title.oneline {
+    display: flex;
+    flex-direction: row;
     margin-bottom: 16px;
 }
 
-.article-title {
-    display: flex;
-    flex-direction: row;
+article header {
+    margin-bottom: 16px;
 }
 
-:is(article header, .article-title) :is(time, ul.tags, .category) {
+article header.with-image {
+    display: grid;
+    grid-template:
+        "image" 1fr
+        "title"
+        / 1fr;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+article header.with-image img {
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+    border-radius: 8px;
+    width: 100%;
+    object-fit: cover;
+}
+
+article header.with-image .article-title {
+    grid-area: title;
+    padding: 8px 8px 4px 8px;
+    color: white;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
+    z-index: 1;
+}
+
+.article-title :is(time, ul.tags, .category) {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -362,28 +389,33 @@ article header {
     gap: 4px;
 }
 
-:is(article header, .article-title) li {
+article header.with-image .article-title :is(time, ul.tags, .category) {
+  color: lightgray;
+}
+
+.article-title li {
     display: block;
 }
 
-:is(article header, .article-title) time {
+.article-title time,
+.article-title .permalink {
     grid-area: date;
 }
 
-:is(article header, .article-title) ul.tags {
+.article-title ul.tags {
     grid-area: tags;
 }
 
-:is(article header, .article-title) .category {
+.article-title .category {
     grid-area: category;
 }
 
-:is(article header, .article-title) :is(h1, h2, h3, h4, h5, h6) {
+.article-title :is(h1, h2, h3, h4, h5, h6) {
     margin: 0;
     grid-area: heading;
 }
 
-.article-title :is(h1, h2, h3, h4, h5, h6) {
+.article-title.oneline :is(h1, h2, h3, h4, h5, h6) {
     font-size: inherit;
     line-height: inherit;
 }

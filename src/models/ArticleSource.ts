@@ -1,4 +1,4 @@
-export type ArticleSource = "Blog" | "GitHub" | "Gist" | "Log" | "Twitter" | undefined;
+export type ArticleSource = "Blog" | "GitHub" | "Gist" | "Log" | "Twitter" | "Nicovideo" | undefined;
 
 export function getUrlFromArticleSource(category: ArticleSource) {
   switch (category) {
@@ -12,6 +12,8 @@ export function getUrlFromArticleSource(category: ArticleSource) {
       return "https://log.sorairo.pictures/"
     case "Twitter":
       return "https://twitter.com/mfakane";
+    case "Nicovideo":
+      return "https://www.nicovideo.jp/user/424070";
     default:
       return undefined;
   }
@@ -31,6 +33,10 @@ export function getArticleSourceFromUrl(url: string): ArticleSource {
       return "Log";
     case "twitter.com":
       return "Twitter";
+    case "www.nicovideo.jp":
+    case "3d.nicovideo.jp":
+    case "seiga.nicovideo.jp":
+      return "Nicovideo";
     default:
       return undefined;
   }
