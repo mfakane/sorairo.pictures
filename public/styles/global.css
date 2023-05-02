@@ -5,6 +5,7 @@
     --content-width: 960px;
     --accent: #405f91;
     --accent-foreground: white;
+    --page-padding: 16px;
 }
 
 html {
@@ -25,11 +26,12 @@ body {
         "header header header" auto
         "left main right" 1fr
         "footer footer footer" auto
-        / 1fr var(--content-width) 1fr;
+        / 1fr minmax(auto, var(--content-width)) 1fr;
 }
 
 .content-width {
     margin: 0 auto;
+    padding: 0 var(--page-padding);
     box-sizing: border-box;
     max-width: var(--content-width);
 }
@@ -247,11 +249,12 @@ body>footer a {
 
 body>main {
     grid-area: main;
+    padding: 0 var(--page-padding);
 }
 
 body>aside {
     margin-left: auto;
-    padding: 0 32px 0 16px;
+    padding: 0 16px 0 0;
     font-size: 90%;
     grid-area: right;
 }
