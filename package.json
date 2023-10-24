@@ -16,7 +16,7 @@
     "apitable": "^0.8.3",
     "astro": "^3.0.0",
     "jsdom": "^22.0.0",
-    "remark-breaks": "^3.0.2"
+    "remark-breaks": "^4.0.0"
   },
   "devDependencies": {
     "@types/jsdom": "^21.1.1",
