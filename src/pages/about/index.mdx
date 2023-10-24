@@ -4,10 +4,11 @@ date: 2017-05-14 05:34:07
 updated: 2017-05-14 05:34:07
 ---
 
+import { Image } from "astro:assets";
 import FaInline from "@/components/FaInline.astro";
 import Portrait from "./fumika.jpg";
 
-<img class="portrait" src={Portrait.src} width="128" height="128" />
+<Image class="portrait" src={Portrait} width={128} height={128} alt="mfakane" />
 
 # MF Akane / ミーフォ茜
 

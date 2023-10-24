@@ -17,8 +17,5 @@ export default defineConfig({
     markdown: {
         remarkPlugins: [defaultLayoutPlugin, remarkBreaks]
     },
-    integrations: [mdx()],
-    experimental: {
-        assets: true,
-    }
+    integrations: [mdx()]
 });
