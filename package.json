@@ -14,7 +14,7 @@
   "dependencies": {
     "@astrojs/mdx": "^1.0.0",
     "apitable": "^1.0.0",
-    "astro": "^3.0.0",
+    "astro": "^4.0.0",
     "jsdom": "^23.0.0",
     "remark-breaks": "^4.0.0"
   },
