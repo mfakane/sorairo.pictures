@@ -13,7 +13,7 @@ const apitable = new APITable({
   fieldKey: "name",
 });
 const datasheet = apitable.datasheet(
-  import.meta.env.APITABLE_UPDATES_DATASHEET_ID
+  import.meta.env.APITABLE_UPDATES_DATASHEET_ID,
 );
 const updatesView = await datasheet.records.query({
   viewId: import.meta.env.APITABLE_UPDATES_VIEW_ID,
@@ -37,7 +37,13 @@ const columns = 3;
 <Layout title={SITE_TITLE}>
   <main>
     <article class="profile">
-      <Image class="portrait" src={Portrait} width={128} height={128} alt="mfakane" />
+      <Image
+        class="portrait"
+        src={Portrait}
+        width={128}
+        height={128}
+        alt="mfakane"
+      />
       <section>
         <h2>I'm @mfakane.</h2>
         <p>ミーフォ茜といいます。</p>
@@ -63,10 +69,27 @@ const columns = 3;
                     set:html={update.summary}
                   >
                     <h3 slot="title">
-                      <a href={typeof update.permalink === "string" ? update.permalink : update.permalink?.text}>{update.title}</a>
+                      <a
+                        href={
+                          update.parent
+                            ? `/${update.parent}`
+                            : typeof update.permalink === "string"
+                            ? update.permalink
+                            : update.permalink?.text
+                        }
+                      >
+                        {update.title}
+                      </a>
                     </h3>
-                    {update.parent && (
-                      <a slot="footer" href={`/${update.parent}`}>
+                    {update.permalink && (
+                      <a
+                        slot="footer"
+                        href={
+                          typeof update.permalink === "string"
+                            ? update.permalink
+                            : update.permalink?.text
+                        }
+                      >
                         詳細 →
                       </a>
                     )}
