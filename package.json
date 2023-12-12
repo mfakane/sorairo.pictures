@@ -12,9 +12,9 @@
     "type-check": "astro check"
   },
   "dependencies": {
-    "@astrojs/mdx": "^2.0.0",
+    "@astrojs/mdx": "^2.0.1",
     "apitable": "^1.3.0",
-    "astro": "^4.0.3",
+    "astro": "^4.0.4",
     "jsdom": "^23.0.1",
     "remark-breaks": "^4.0.0"
   },
