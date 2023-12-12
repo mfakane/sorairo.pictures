@@ -61,7 +61,7 @@ const updates = (updatesView.data?.records ?? [])
 ---
 
 <Layout title={entry.data.title}>
-  <main>
+  <main transition:animate="slide">
     <Article date={entry.data.date} updated={entry.data.updated}>
       <h1 slot="title">{entry.data.title}</h1>
       {entry.data.portrait && <Portrait portrait={entry.data.portrait} />}

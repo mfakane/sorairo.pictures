@@ -35,7 +35,7 @@ const headingsWithChildren = headings.reduce<MarkdownHeadingWithChildren[]>(
 ---
 
 <Layout title={frontmatter.title}>
-  <main>
+  <main transition:animate="slide">
     <Article
       date={new Date(frontmatter.date)}
       updated={frontmatter.updated ? new Date(frontmatter.updated) : undefined}

@@ -17,5 +17,8 @@ export default defineConfig({
     markdown: {
         remarkPlugins: [defaultLayoutPlugin, remarkBreaks]
     },
-    integrations: [mdx()]
+    integrations: [mdx()],
+    prefetch: {
+        prefetchAll: true
+    }
 });
