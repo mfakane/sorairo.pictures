@@ -16,12 +16,14 @@ const { date, permalink, source, tags } = Astro.props;
 
 <article class="article-title oneline">
   {
-    permalink ? (
-      <a class="permalink" href={permalink}>
+    date && (
+      permalink ? (
+        <a class="permalink" href={permalink}>
+          <DateTime date={date} />
+        </a>
+      ) : (
         <DateTime date={date} />
-      </a>
-    ) : (
-      <DateTime date={date} />
+      )
     )
   }
   <slot name="title" />

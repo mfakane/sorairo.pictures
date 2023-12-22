@@ -2,7 +2,7 @@
 import FaInline from "./FaInline.astro";
 
 export interface Props {
-  date: Date | undefined;
+  date: Date;
   updated?: Date | undefined;
 }
 
@@ -10,24 +10,20 @@ const { date, updated } = Astro.props;
 ---
 
 {
-  date ? (
-    <time class="datetime" datetime={date.toISOString()}>
-      {`${date.getFullYear()}-${(date.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`}
-      {updated && updated > date && (
-        <span class="datetime-updated">
-          <FaInline type="fas" icon="rotate" />
-          {`${updated.getFullYear()}-${(updated.getMonth() + 1)
-            .toString()
-            .padStart(2, "0")}-${updated
-            .getDate()
-            .toString()
-            .padStart(2, "0")}`}
-        </span>
-      )}
-    </time>
-  ) : (
-    "Permalink"
-  )
+  <time class="datetime" datetime={date.toISOString()}>
+    {`${date.getFullYear()}-${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`}
+    {updated && updated > date && (
+      <span class="datetime-updated">
+        <FaInline type="fas" icon="rotate" />
+        {`${updated.getFullYear()}-${(updated.getMonth() + 1)
+          .toString()
+          .padStart(2, "0")}-${updated
+          .getDate()
+          .toString()
+          .padStart(2, "0")}`}
+      </span>
+    )}
+  </time>
 }

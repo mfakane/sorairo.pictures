@@ -24,12 +24,14 @@ const { date, updated, permalink, source, tags, image } = Astro.props;
     <div class="article-title">
       <slot name="title" />
       {
-        permalink ? (
-          <a class="permalink" href={typeof permalink === "string" ? permalink : permalink.text}>
+        date && (
+          permalink ? (
+            <a class="permalink" href={typeof permalink === "string" ? permalink : permalink.text}>
+              <DateTime date={date} updated={updated} />
+            </a>
+          ) : (
             <DateTime date={date} updated={updated} />
-          </a>
-        ) : (
-          <DateTime date={date} updated={updated} />
+          )
         )
       }
       {source && <ArticleHeaderCategory source={source} />}
