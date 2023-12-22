@@ -6,7 +6,7 @@ import TableOfContents from "@/components/TableOfContents.astro";
 
 type Props = MarkdownLayoutProps<{
   title: string;
-  date: string;
+  date?: string;
   updated?: string;
 }>;
 
@@ -37,7 +37,7 @@ const headingsWithChildren = headings.reduce<MarkdownHeadingWithChildren[]>(
 <Layout title={frontmatter.title}>
   <main transition:animate="slide">
     <Article
-      date={new Date(frontmatter.date)}
+      date={frontmatter.date ? new Date(frontmatter.date) : undefined}
       updated={frontmatter.updated ? new Date(frontmatter.updated) : undefined}
     >
       <h1 slot="title">{frontmatter.title}</h1>
