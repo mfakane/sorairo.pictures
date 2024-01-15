@@ -1,6 +1,4 @@
 :root {
-    --font-heading: 'Questrial', 'Arial', 'Meiryo', sans-serif;
-    --font-text: 'Lato', 'Arial', 'Meiryo', system-ui, sans-serif;
     --font-code: 'Consolas', monospace;
     --content-width: 960px;
     --accent: #405f91;

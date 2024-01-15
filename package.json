@@ -15,6 +15,7 @@
     "@astrojs/mdx": "^2.0.1",
     "apitable": "^1.3.0",
     "astro": "^4.0.4",
+    "astro-font": "^0.0.72",
     "jsdom": "^23.0.1",
     "remark-breaks": "^4.0.0"
   },
