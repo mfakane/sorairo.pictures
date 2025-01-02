@@ -1,24 +1,22 @@
 import type { APIRoute } from "astro";
 import { SITE_AUTHOR, SITE_TITLE } from "@/config";
 import { getArticleSourceFromUrl } from "@/models/ArticleSource";
-import { APITable } from "apitable";
 import type { UpdatesFields } from "@/models/ApiTable";
 import { JSDOM } from "jsdom";
 
-const apitable = new APITable({
-  token: import.meta.env.APITABLE_ACCESS_TOKEN,
-  fieldKey: "name",
+const apiTableUrl = `https://aitable.ai/fusion/v1/datasheets/${import.meta.env.APITABLE_UPDATES_DATASHEET_ID}/records?viewId=${import.meta.env.APITABLE_UPDATES_VIEW_ID}&fieldKey=name`;
+const res = await fetch(apiTableUrl, {
+  method: "GET",
+  headers: new Headers({
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${import.meta.env.APITABLE_ACCESS_TOKEN}`,
+  }),
 });
-const datasheet = apitable.datasheet(
-  import.meta.env.APITABLE_UPDATES_DATASHEET_ID
-);
-const updatesView = await datasheet.records.query({
-  viewId: import.meta.env.APITABLE_UPDATES_VIEW_ID,
-});
+const updatesView = await res.json();
 
 const updates = (updatesView.data?.records ?? [])
-  .map((x) => x.fields as UpdatesFields)
-  .map((x) => ({
+  .map((x: any) => x.fields as UpdatesFields)
+  .map((x: any) => ({
     title: x.title ?? "",
     date: x.date ? new Date(x.date) : undefined,
     permalink: x.href?.text,

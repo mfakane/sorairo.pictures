@@ -5,7 +5,6 @@ import Portrait from "@/components/Portrait.astro";
 import Layout from "./Layout.astro";
 import TableOfContents from "@/components/TableOfContents.astro";
 import type { CollectionEntry } from "astro:content";
-import { APITable } from "apitable";
 import type { UpdatesFields } from "@/models/ApiTable";
 import { getArticleSourceFromUrl } from "@/models/ArticleSource";
 
@@ -34,20 +33,21 @@ const headingsWithChildren = headings.reduce<MarkdownHeadingWithChildren[]>(
     }
     return acc;
   },
-  []
+  [],
 );
 
-const apitable = new APITable({
-  token: import.meta.env.APITABLE_ACCESS_TOKEN,
-  fieldKey: "name",
+const filterByFormula = `{parent} != "" && {parent} = "${entry.slug}"`;
+const apiTableUrl = `https://aitable.ai/fusion/v1/datasheets/${import.meta.env.APITABLE_UPDATES_DATASHEET_ID}/records?viewId=${import.meta.env.APITABLE_UPDATES_VIEW_ID}&fieldKey=name&filterByFormula=${encodeURIComponent(
+  filterByFormula,
+)}`;
+const res = await fetch(apiTableUrl, {
+  method: "GET",
+  headers: new Headers({
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${import.meta.env.APITABLE_ACCESS_TOKEN}`,
+  }),
 });
-const datasheet = apitable.datasheet(
-  import.meta.env.APITABLE_UPDATES_DATASHEET_ID
-);
-const updatesView = await datasheet.records.query({
-  viewId: import.meta.env.APITABLE_UPDATES_VIEW_ID,
-  filterByFormula: `{parent} != "" && {parent} = "${entry.slug}"`,
-});
+const updatesView = await res.json();
 
 const updates = (updatesView.data?.records ?? [])
   .map((x) => x.fields as UpdatesFields)
