@@ -4,15 +4,18 @@ import { SITE_AUTHOR, SITE_TITLE } from "@/config";
 import { getArticleSourceFromUrl } from "@/models/ArticleSource";
 import { JSDOM } from "jsdom";
 
-const headlines = (await getCollection("headline")).map((x) => ({
-  title: x.data.title ?? "",
-  date: x.data.date,
-  permalink: x.data.href,
-  source: x.data.href ? getArticleSourceFromUrl(x.data.href) : undefined,
-  summary: x.body ?? "",
-  path: x.data.path,
-  image: x.data.image,
-}));
+const headlines = (await getCollection("headline"))
+  .map((x) => ({
+    title: x.data.title ?? "",
+    date: x.data.date,
+    permalink: x.data.href,
+    source: x.data.href ? getArticleSourceFromUrl(x.data.href) : undefined,
+    summary: x.body ?? "",
+    path: x.data.path,
+    image: x.data.image,
+  }))
+  .sort((a, b) => b.date.valueOf() - a.date.valueOf());
+
 
 export const get: APIRoute = ({ site }) => {
   const dom = new JSDOM();
