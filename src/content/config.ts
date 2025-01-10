@@ -14,7 +14,7 @@ const blogCollection = defineCollection({
               image(),
               z.object({
                 image: image(),
-                href: z.string(),
+                href: z.string().url(),
               }),
             ])
           ),
@@ -23,6 +23,22 @@ const blogCollection = defineCollection({
     }),
 });
 
+const headlineCollection = defineCollection({
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      date: z.date(),
+      href: z.string().url(),
+      path: z.string().optional(),
+      image: z.union([
+          image(),
+          z.string().url(),
+        ])
+        .optional(),
+    }),
+});
+
 export const collections = {
   blog: blogCollection,
+  headline: headlineCollection,
 };

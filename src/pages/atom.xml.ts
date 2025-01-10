@@ -1,30 +1,18 @@
 import type { APIRoute } from "astro";
+import { getCollection } from "astro:content";
 import { SITE_AUTHOR, SITE_TITLE } from "@/config";
 import { getArticleSourceFromUrl } from "@/models/ArticleSource";
-import type { UpdatesFields } from "@/models/ApiTable";
 import { JSDOM } from "jsdom";
 
-const apiTableUrl = `https://aitable.ai/fusion/v1/datasheets/${import.meta.env.APITABLE_UPDATES_DATASHEET_ID}/records?viewId=${import.meta.env.APITABLE_UPDATES_VIEW_ID}&fieldKey=name`;
-const res = await fetch(apiTableUrl, {
-  method: "GET",
-  headers: new Headers({
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${import.meta.env.APITABLE_ACCESS_TOKEN}`,
-  }),
-});
-const updatesView = await res.json();
-
-const updates = (updatesView.data?.records ?? [])
-  .map((x: any) => x.fields as UpdatesFields)
-  .map((x: any) => ({
-    title: x.title ?? "",
-    date: x.date ? new Date(x.date) : undefined,
-    permalink: x.href?.text,
-    source: x.href ? getArticleSourceFromUrl(x.href.text) : undefined,
-    summary: x.body ?? "",
-    parent: x.parent,
-  }));
-
+const headlines = (await getCollection("headline")).map((x) => ({
+  title: x.data.title ?? "",
+  date: x.data.date,
+  permalink: x.data.href,
+  source: x.data.href ? getArticleSourceFromUrl(x.data.href) : undefined,
+  summary: x.body ?? "",
+  path: x.data.path,
+  image: x.data.image,
+}));
 
 export const get: APIRoute = ({ site }) => {
   const dom = new JSDOM();
@@ -50,22 +38,22 @@ export const get: APIRoute = ({ site }) => {
   const generator = feed.appendChild(doc.createElementNS(ns, "generator"));
   generator.setAttribute("uri", "https://astro.build/");
 
-  for (const update of updates) {
-    if (!update.date || !update.permalink) continue;
+  for (const post of headlines) {
+    if (!post.date || !post.permalink) continue;
 
     const entry = feed.appendChild(doc.createElementNS(ns, "entry"));
-    entry.appendChild(doc.createElementNS(ns, "title")).textContent = update.title;
+    entry.appendChild(doc.createElementNS(ns, "title")).textContent = post.title;
 
     const link = entry.appendChild(doc.createElementNS(ns, "link"));
-    link.setAttribute("href", update.permalink);
-    entry.appendChild(doc.createElementNS(ns, "published")).textContent = update.date.toISOString();
-    entry.appendChild(doc.createElementNS(ns, "summary")).textContent = update.summary;
+    link.setAttribute("href", post.permalink);
+    entry.appendChild(doc.createElementNS(ns, "published")).textContent = post.date.toISOString();
+    entry.appendChild(doc.createElementNS(ns, "summary")).textContent = post.summary;
   }
 
-  return {
-    headers: {
-      "Content-Type": "application/atom+xml; charset=utf-8",
-    },
-    body: doc.documentElement.outerHTML,
-  };
+  return new Response(doc.documentElement.outerHTML,
+    {
+      headers: {
+        "Content-Type": "application/atom+xml; charset=utf-8",
+      }
+    });
 };

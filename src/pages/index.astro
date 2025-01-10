@@ -1,33 +1,21 @@
 ---
 import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
 import Article from "@/components/Article.astro";
 import Layout from "@/layouts/Layout.astro";
 import { SITE_TITLE } from "@/config";
 import Portrait from "./about/fumika.jpg";
 import { getArticleSourceFromUrl } from "@/models/ArticleSource";
-import type { UpdatesFields } from "@/models/ApiTable";
 
-const apiTableUrl = `https://aitable.ai/fusion/v1/datasheets/${import.meta.env.APITABLE_UPDATES_DATASHEET_ID}/records?viewId=${import.meta.env.APITABLE_UPDATES_VIEW_ID}&fieldKey=name`;
-const res = await fetch(apiTableUrl, {
-  method: "GET",
-  headers: new Headers({
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${import.meta.env.APITABLE_ACCESS_TOKEN}`,
-  }),
-});
-const updatesView = await res.json();
-
-const updates = (updatesView.data?.records ?? [])
-  .map((x: any) => x.fields as UpdatesFields)
-  .map((x: any) => ({
-    title: x.title ?? "",
-    date: x.date ? new Date(x.date) : undefined,
-    permalink: x.href,
-    source: x.href ? getArticleSourceFromUrl(x.href.text) : undefined,
-    summary: x.body ?? "",
-    parent: x.parent,
-    image: x.image,
-  }));
+const headlines = (await getCollection("headline")).map((x) => ({
+  title: x.data.title ?? "",
+  date: x.data.date,
+  permalink: x.data.href,
+  source: x.data.href ? getArticleSourceFromUrl(x.data.href) : undefined,
+  summary: x.body ?? "",
+  path: x.data.path,
+  image: x.data.image,
+}));
 
 const columns = 3;
 ---
@@ -56,38 +44,27 @@ const columns = 3;
         {
           [...Array(columns)].map((_, column) => (
             <div class="showcase-column">
-              {updates
+              {headlines
                 .filter((_: any, i: any) => i % columns === column)
-                .map((update) => (
+                .map((post) => (
                   <Article
-                    date={update.date}
-                    permalink={update.permalink}
-                    source={update.source}
-                    image={update.image}
-                    set:html={update.summary}
+                    date={post.date}
+                    permalink={post.permalink}
+                    source={post.source}
+                    image={
+                      typeof post.image === "string"
+                        ? post.image
+                        : post.image?.src
+                    }
+                    set:html={post.summary}
                   >
                     <h3 slot="title">
-                      <a
-                        href={
-                          update.parent
-                            ? `/${update.parent}`
-                            : typeof update.permalink === "string"
-                              ? update.permalink
-                              : update.permalink?.text
-                        }
-                      >
-                        {update.title}
+                      <a href={post.path ? post.path : post.permalink}>
+                        {post.title}
                       </a>
                     </h3>
-                    {update.permalink && (
-                      <a
-                        slot="footer"
-                        href={
-                          typeof update.permalink === "string"
-                            ? update.permalink
-                            : update.permalink?.text
-                        }
-                      >
+                    {post.permalink && (
+                      <a slot="footer" href={post.permalink}>
                         詳細 →
                       </a>
                     )}
