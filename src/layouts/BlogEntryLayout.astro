@@ -1,11 +1,11 @@
 ---
 import type { MarkdownHeading } from "astro";
+import { getCollection } from "astro:content";
 import Article from "@/components/Article.astro";
 import Portrait from "@/components/Portrait.astro";
 import Layout from "./Layout.astro";
 import TableOfContents from "@/components/TableOfContents.astro";
 import type { CollectionEntry } from "astro:content";
-import type { UpdatesFields } from "@/models/ApiTable";
 import { getArticleSourceFromUrl } from "@/models/ArticleSource";
 
 export interface Props {
@@ -36,28 +36,18 @@ const headingsWithChildren = headings.reduce<MarkdownHeadingWithChildren[]>(
   [],
 );
 
-const filterByFormula = `{parent} != "" && {parent} = "${entry.slug}"`;
-const apiTableUrl = `https://aitable.ai/fusion/v1/datasheets/${import.meta.env.APITABLE_UPDATES_DATASHEET_ID}/records?viewId=${import.meta.env.APITABLE_UPDATES_VIEW_ID}&fieldKey=name&filterByFormula=${encodeURIComponent(
-  filterByFormula,
-)}`;
-const res = await fetch(apiTableUrl, {
-  method: "GET",
-  headers: new Headers({
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${import.meta.env.APITABLE_ACCESS_TOKEN}`,
-  }),
-});
-const updatesView = await res.json();
 
-const updates = (updatesView.data?.records ?? [])
-  .map((x) => x.fields as UpdatesFields)
+const headlines = (await getCollection("headline", x => x.data.path?.id === entry.slug))
   .map((x) => ({
-    title: x.title ?? "",
-    date: x.date ? new Date(x.date) : undefined,
-    permalink: x.href?.text,
-    source: x.href ? getArticleSourceFromUrl(x.href.text) : undefined,
+    title: x.data.title ?? "",
+    date: x.data.date,
+    permalink: x.data.href,
+    source: x.data.href ? getArticleSourceFromUrl(x.data.href) : undefined,
     summary: x.body ?? "",
-  }));
+    path: x.data.path,
+    image: x.data.image,
+  }))
+  .sort((a, b) => b.date.valueOf() - a.date.valueOf());
 ---
 
 <Layout title={entry.data.title}>
@@ -68,18 +58,18 @@ const updates = (updatesView.data?.records ?? [])
       <Content />
     </Article>
     {
-      updates.length > 0 && (
+      headlines.length > 0 && (
         <article>
           <h2>更新情報</h2>
-          {updates.map((update) => (
+          {headlines.map((post) => (
             <Article
-              date={update.date}
-              permalink={update.permalink}
-              source={update.source}
-              set:html={update.summary}
+              date={post.date}
+              permalink={post.permalink}
+              source={post.source}
+              set:html={post.summary}
             >
               <h3 slot="title">
-                <a href={update.permalink}>{update.title}</a>
+                <a href={post.permalink}>{post.title}</a>
               </h3>
             </Article>
           ))}

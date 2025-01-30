@@ -11,7 +11,7 @@ const headlines = (await getCollection("headline"))
     permalink: x.data.href,
     source: x.data.href ? getArticleSourceFromUrl(x.data.href) : undefined,
     summary: x.body ?? "",
-    path: x.data.path,
+    path: x.data.path?.id,
     image: x.data.image,
   }))
   .sort((a, b) => b.date.valueOf() - a.date.valueOf());
