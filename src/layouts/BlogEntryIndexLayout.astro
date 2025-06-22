@@ -1,8 +1,8 @@
 ---
 import Article from "@/components/Article.astro";
 import Portrait from "@/components/Portrait.astro";
-import Layout from "./Layout.astro";
 import type { CollectionEntry } from "astro:content";
+import Layout from "./Layout.astro";
 
 export interface Props {
   category: string;
@@ -23,7 +23,7 @@ articles.sort((x, y) =>
 ---
 
 <Layout title={category}>
-  <main transition:animate="slide">
+  <main>
     {
       articles.map((article) => (
         <Article

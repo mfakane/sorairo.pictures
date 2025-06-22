@@ -1,12 +1,12 @@
 ---
-import type { MarkdownHeading } from "astro";
-import { getCollection } from "astro:content";
 import Article from "@/components/Article.astro";
 import Portrait from "@/components/Portrait.astro";
-import Layout from "./Layout.astro";
 import TableOfContents from "@/components/TableOfContents.astro";
-import type { CollectionEntry } from "astro:content";
 import { getArticleSourceFromUrl } from "@/models/ArticleSource";
+import type { MarkdownHeading } from "astro";
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import Layout from "./Layout.astro";
 
 export interface Props {
   entry: CollectionEntry<"blog">;
@@ -51,7 +51,7 @@ const headlines = (await getCollection("headline", x => x.data.path?.id === entr
 ---
 
 <Layout title={entry.data.title}>
-  <main transition:animate="slide">
+  <main>
     <Article date={entry.data.date} updated={entry.data.updated}>
       <h1 slot="title">{entry.data.title}</h1>
       {entry.data.portrait && <Portrait portrait={entry.data.portrait} />}

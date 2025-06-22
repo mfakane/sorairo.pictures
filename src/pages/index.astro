@@ -1,11 +1,11 @@
 ---
+import Article from "@/components/Article.astro";
+import { SITE_TITLE } from "@/config";
+import Layout from "@/layouts/Layout.astro";
+import { getArticleSourceFromUrl } from "@/models/ArticleSource";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
-import Article from "@/components/Article.astro";
-import Layout from "@/layouts/Layout.astro";
-import { SITE_TITLE } from "@/config";
 import Portrait from "./about/fumika.jpg";
-import { getArticleSourceFromUrl } from "@/models/ArticleSource";
 
 const headlines = (await getCollection("headline"))
   .map((x) => ({
@@ -23,7 +23,7 @@ const columns = 3;
 ---
 
 <Layout title={SITE_TITLE}>
-  <main transition:animate="slide">
+  <main>
     <article class="profile">
       <Image
         class="portrait"
