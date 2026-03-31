@@ -1,6 +1,9 @@
-import { z, defineCollection, reference } from "astro:content";
+import { glob } from "astro/loaders";
+import { z } from "astro/zod";
+import { defineCollection, reference } from "astro:content";
 
 const blogCollection = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: "./src/content/blog" }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
@@ -14,7 +17,7 @@ const blogCollection = defineCollection({
               image(),
               z.object({
                 image: image(),
-                href: z.string().url(),
+                href: z.url(),
               }),
             ])
           ),
@@ -24,15 +27,16 @@ const blogCollection = defineCollection({
 });
 
 const headlineCollection = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: "./src/content/headline" }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
       date: z.date(),
-      href: z.string().url(),
+      href: z.url(),
       path: reference("blog").optional(),
       image: z.union([
           image(),
-          z.string().url(),
+          z.url(),
         ])
         .optional(),
     }),

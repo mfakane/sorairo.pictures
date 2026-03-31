@@ -1,7 +1,7 @@
 ---
 import Article from "@/components/Article.astro";
 import Portrait from "@/components/Portrait.astro";
-import type { CollectionEntry } from "astro:content";
+import { render, type CollectionEntry } from "astro:content";
 import Layout from "./Layout.astro";
 
 export interface Props {
@@ -13,8 +13,8 @@ const { category, entries } = Astro.props;
 const articles = [];
 
 for (const entry of entries) {
-  const { Content } = await entry.render();
-  articles.push({ slug: entry.slug, data: entry.data, Content });
+  const { Content } = await render(entry);
+  articles.push({ slug: entry.id, data: entry.data, Content });
 }
 
 articles.sort((x, y) =>

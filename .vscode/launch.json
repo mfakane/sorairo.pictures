@@ -1,11 +1,29 @@
 {
+  "version": "0.2.0",
   "configurations": [
     {
-      "type": "vscode-edge-devtools.debug",
+      "type": "editor-browser",
       "request": "launch",
-      "name": "Launch Microsoft Edge and open the Edge DevTools",
+      "name": "Browser",
       "url": "http://localhost:4321",
       "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "node-terminal",
+      "request": "launch",
+      "name": "Server",
+      "command": "npm run dev -- --port 4321",
+      "autoAttachChildProcesses": true
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Browser/Server",
+      "configurations": [
+        "Browser",
+        "Server"
+      ],
+      "stopAll": true,
     }
   ]
 }

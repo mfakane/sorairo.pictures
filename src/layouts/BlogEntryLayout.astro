@@ -5,7 +5,7 @@ import TableOfContents from "@/components/TableOfContents.astro";
 import { getArticleSourceFromUrl } from "@/models/ArticleSource";
 import type { MarkdownHeading } from "astro";
 import type { CollectionEntry } from "astro:content";
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import Layout from "./Layout.astro";
 
 export interface Props {
@@ -17,7 +17,7 @@ type MarkdownHeadingWithChildren = MarkdownHeading & {
 };
 
 const { entry } = Astro.props;
-const { Content, headings } = await entry.render();
+const { Content, headings } = await render(entry);
 
 const headingsWithChildren = headings.reduce<MarkdownHeadingWithChildren[]>(
   (acc, x) => {
@@ -37,7 +37,7 @@ const headingsWithChildren = headings.reduce<MarkdownHeadingWithChildren[]>(
 );
 
 
-const headlines = (await getCollection("headline", x => x.data.path?.id === entry.slug))
+const headlines = (await getCollection("headline", x => x.data.path?.id === entry.id))
   .map((x) => ({
     title: x.data.title ?? "",
     date: x.data.date,

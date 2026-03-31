@@ -1,7 +1,7 @@
-import type { APIRoute } from "astro";
-import { getCollection } from "astro:content";
 import { SITE_AUTHOR, SITE_TITLE } from "@/config";
 import { getArticleSourceFromUrl } from "@/models/ArticleSource";
+import type { APIRoute } from "astro";
+import { getCollection } from "astro:content";
 import { JSDOM } from "jsdom";
 
 const headlines = (await getCollection("headline"))
@@ -17,7 +17,7 @@ const headlines = (await getCollection("headline"))
   .sort((a, b) => b.date.valueOf() - a.date.valueOf());
 
 
-export const get: APIRoute = ({ site }) => {
+export const GET: APIRoute = ({ site }) => {
   const dom = new JSDOM();
   const ns = "http://www.w3.org/2005/Atom";
   const doc = dom.window.document.implementation.createDocument(ns, "feed", null);
