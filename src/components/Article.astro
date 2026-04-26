@@ -1,8 +1,8 @@
 ---
-import DateTime from "./DateTime.astro";
+import type { ArticleSource } from "@/models/ArticleSource";
 import ArticleHeaderCategory from "./Article/HeaderCategory.astro";
 import ArticleHeaderTags from "./Article/HeaderTags.astro";
-import type { ArticleSource } from "@/models/ArticleSource";
+import DateTime from "./DateTime.astro";
 
 export interface Props {
   date?: Date | undefined;
@@ -13,10 +13,10 @@ export interface Props {
   image?: Image | undefined;
 }
 
-type Image = string | { title: string; text: string; };
-type URL = string | { title: string; text: string; favicon: string; }
+type Image = string | { title: string; text: string };
+type URL = string | { title: string; text: string; favicon: string };
 
-const { date, updated, permalink, source, tags, image } = Astro.props;
+const { date, updated, permalink, source, tags, image }: Props = Astro.props;
 ---
 
 <article>
@@ -24,15 +24,17 @@ const { date, updated, permalink, source, tags, image } = Astro.props;
     <div class="article-title">
       <slot name="title" />
       {
-        date && (
-          permalink ? (
-            <a class="permalink" href={typeof permalink === "string" ? permalink : permalink.text}>
+        date &&
+          (permalink ? (
+            <a
+              class="permalink"
+              href={typeof permalink === "string" ? permalink : permalink.text}
+            >
               <DateTime date={date} updated={updated} />
             </a>
           ) : (
             <DateTime date={date} updated={updated} />
-          )
-        )
+          ))
       }
       {source && <ArticleHeaderCategory source={source} />}
       {tags && <ArticleHeaderTags tags={tags} />}

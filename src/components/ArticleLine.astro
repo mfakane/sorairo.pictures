@@ -1,8 +1,8 @@
 ---
-import DateTime from "./DateTime.astro";
+import type { ArticleSource } from "@/models/ArticleSource";
 import ArticleHeaderCategory from "./Article/HeaderCategory.astro";
 import ArticleHeaderTags from "./Article/HeaderTags.astro";
-import type { ArticleSource } from "@/models/ArticleSource";
+import DateTime from "./DateTime.astro";
 
 export interface Props {
   date?: Date | undefined;
@@ -11,20 +11,19 @@ export interface Props {
   tags?: readonly string[];
 }
 
-const { date, permalink, source, tags } = Astro.props;
+const { date, permalink, source, tags }: Props = Astro.props;
 ---
 
 <article class="article-title oneline">
   {
-    date && (
-      permalink ? (
+    date &&
+      (permalink ? (
         <a class="permalink" href={permalink}>
           <DateTime date={date} />
         </a>
       ) : (
         <DateTime date={date} />
-      )
-    )
+      ))
   }
   <slot name="title" />
   {source && <ArticleHeaderCategory category={source} />}

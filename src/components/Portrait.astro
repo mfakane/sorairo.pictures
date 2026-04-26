@@ -6,16 +6,16 @@ export interface Props {
 }
 
 interface ImageMetadata {
-	src: string;
-	width: number;
-	height: number;
+  src: string;
+  width: number;
+  height: number;
 }
 
 type PortraitItem = ImageMetadata | { image: ImageMetadata; href: string };
 
-const { portrait } = Astro.props;
+const { portrait }: Props = Astro.props;
 const items = (Array.isArray(portrait) ? portrait : [portrait]).map((item) =>
-  item.image ? item : { image: item, href: "" }
+  item.image ? item : { image: item, href: "" },
 );
 ---
 
@@ -40,7 +40,7 @@ const items = (Array.isArray(portrait) ? portrait : [portrait]).map((item) =>
           alt=""
           class="portrait"
         />
-      )
+      ),
     )
   }
 </p>

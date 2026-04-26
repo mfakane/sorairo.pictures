@@ -6,24 +6,26 @@ export interface Props {
   updated?: Date | undefined;
 }
 
-const { date, updated } = Astro.props;
+const { date, updated }: Props = Astro.props;
 ---
 
 {
-  <time class="datetime" datetime={date.toISOString()}>
-    {`${date.getFullYear()}-${(date.getMonth() + 1)
-      .toString()
-      .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`}
-    {updated && updated > date && (
-      <span class="datetime-updated">
-        <FaInline type="fas" icon="rotate" />
-        {`${updated.getFullYear()}-${(updated.getMonth() + 1)
-          .toString()
-          .padStart(2, "0")}-${updated
-          .getDate()
-          .toString()
-          .padStart(2, "0")}`}
-      </span>
-    )}
-  </time>
+  (
+    <time class="datetime" datetime={date.toISOString()}>
+      {`${date.getFullYear()}-${(date.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`}
+      {updated && updated > date && (
+        <span class="datetime-updated">
+          <FaInline type="fas" icon="rotate" />
+          {`${updated.getFullYear()}-${(updated.getMonth() + 1)
+            .toString()
+            .padStart(2, "0")}-${updated
+            .getDate()
+            .toString()
+            .padStart(2, "0")}`}
+        </span>
+      )}
+    </time>
+  )
 }

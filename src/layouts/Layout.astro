@@ -7,10 +7,10 @@ export interface Props {
   title: string;
 }
 
-const { title } = Astro.props;
+const { title }: Props = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
@@ -26,7 +26,7 @@ const { title } = Astro.props;
           display: "swap",
           fallback: "sans-serif",
           cssVariable: "font-text",
-          googleFontsURL: 'https://fonts.googleapis.com/css?family=Lato',
+          googleFontsURL: "https://fonts.googleapis.com/css?family=Lato",
         },
         {
           src: [],
@@ -35,7 +35,7 @@ const { title } = Astro.props;
           name: "Questrial",
           fallback: "sans-serif",
           cssVariable: "font-heading",
-          googleFontsURL: 'https://fonts.googleapis.com/css?family=Questrial',
+          googleFontsURL: "https://fonts.googleapis.com/css?family=Questrial",
         },
       ]}
     />

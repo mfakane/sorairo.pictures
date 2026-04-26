@@ -47,7 +47,7 @@ const columns = 3;
           [...Array(columns)].map((_, column) => (
             <div class="showcase-column">
               {headlines
-                .filter((_: any, i: any) => i % columns === column)
+                .filter((_, i) => i % columns === column)
                 .map((post) => (
                   <Article
                     date={post.date}
@@ -58,7 +58,6 @@ const columns = 3;
                         ? post.image
                         : post.image?.src
                     }
-                    set:html={post.summary}
                   >
                     <h3 slot="title">
                       <a href={post.path ? post.path : post.permalink}>
@@ -70,6 +69,7 @@ const columns = 3;
                         詳細 →
                       </a>
                     )}
+                    <Fragment set:html={post.summary} />
                   </Article>
                 ))}
             </div>

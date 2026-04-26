@@ -3,7 +3,7 @@ export interface Props {
   tags: readonly string[];
 }
 
-const { tags } = Astro.props;
+const { tags }: Props = Astro.props;
 ---
 
 {

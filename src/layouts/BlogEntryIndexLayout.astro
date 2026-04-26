@@ -9,7 +9,7 @@ export interface Props {
   entries: readonly CollectionEntry<"blog">[];
 }
 
-const { category, entries } = Astro.props;
+const { category, entries }: Props = Astro.props;
 const articles = [];
 
 for (const entry of entries) {

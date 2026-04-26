@@ -5,7 +5,7 @@ export interface Props {
   description?: string;
 }
 
-const { href, title, description } = Astro.props;
+const { href, title, description }: Props = Astro.props;
 ---
 
 <a href={href} class="card">

@@ -1,7 +1,7 @@
 ---
 import Article from "@/components/Article.astro";
 import TableOfContents from "@/components/TableOfContents.astro";
-import type { MarkdownHeading, MarkdownLayoutProps } from "astro";
+import { MarkdownHeading, MarkdownLayoutProps } from "astro/dist/types/public";
 import Layout from "./Layout.astro";
 
 type Props = MarkdownLayoutProps<{
@@ -14,7 +14,7 @@ type MarkdownHeadingWithChildren = MarkdownHeading & {
   children: MarkdownHeadingWithChildren[];
 };
 
-const { frontmatter, headings } = Astro.props;
+const { frontmatter, headings }: Props = Astro.props;
 
 const headingsWithChildren = headings.reduce<MarkdownHeadingWithChildren[]>(
   (acc, x) => {

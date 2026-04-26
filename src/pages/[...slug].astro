@@ -3,27 +3,33 @@ import BlogEntryIndexLayout from "@/layouts/BlogEntryIndexLayout.astro";
 import BlogEntryLayout from "@/layouts/BlogEntryLayout.astro";
 import { type CollectionEntry, getCollection } from "astro:content";
 
-export async function getStaticPaths(): Promise<{ params: { slug: string }, props: Props }[]> {
+type StaticPath = { params: { slug: string }; props: Props };
+
+export async function getStaticPaths(): Promise<StaticPath[]> {
   const blogEntries = await getCollection("blog");
   const blogCategories = blogEntries
-    .map(entry => {
+    .map((entry) => {
       const lastSlash = entry.id.lastIndexOf("/");
       return lastSlash >= 0 ? entry.id.slice(0, lastSlash) : null;
     })
-    .filter(x => x !== null);
+    .filter((x) => x !== null);
 
   return blogEntries
-    .map(entry => ({
+    .map((entry) => ({
       params: { slug: entry.id as string },
       props: { entry } as Props,
     }))
-    .concat(blogCategories.map(category => ({
-      params: { slug: category as string },
-      props: {
-        category,
-        entries: blogEntries.filter(entry => entry.id.startsWith(category + "/")),
-      } as Props,
-    })));
+    .concat(
+      blogCategories.map((category) => ({
+        params: { slug: category as string },
+        props: {
+          category,
+          entries: blogEntries.filter((entry) =>
+            entry.id.startsWith(category + "/"),
+          ),
+        } as Props,
+      })),
+    );
 }
 
 export interface Props {
@@ -32,8 +38,12 @@ export interface Props {
   entries?: readonly CollectionEntry<"blog">[];
 }
 
-const { category, entry, entries } = Astro.props;
+const { category, entry, entries }: Props = Astro.props;
 ---
 
 {entry && <BlogEntryLayout entry={entry} />}
-{category && entries && <BlogEntryIndexLayout category={category} entries={entries} />}
+{
+  category && entries && (
+    <BlogEntryIndexLayout category={category} entries={entries} />
+  )
+}

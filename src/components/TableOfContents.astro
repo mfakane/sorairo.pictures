@@ -9,7 +9,7 @@ export interface Props {
   items: readonly Item[];
 }
 
-const { items } = Astro.props;
+const { items }: Props = Astro.props;
 ---
 
 {

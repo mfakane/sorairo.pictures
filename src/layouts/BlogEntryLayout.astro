@@ -3,7 +3,7 @@ import Article from "@/components/Article.astro";
 import Portrait from "@/components/Portrait.astro";
 import TableOfContents from "@/components/TableOfContents.astro";
 import { getArticleSourceFromUrl } from "@/models/ArticleSource";
-import type { MarkdownHeading } from "astro";
+import { MarkdownHeading } from "astro/dist/types/public";
 import type { CollectionEntry } from "astro:content";
 import { getCollection, render } from "astro:content";
 import Layout from "./Layout.astro";
@@ -16,7 +16,7 @@ type MarkdownHeadingWithChildren = MarkdownHeading & {
   children: MarkdownHeadingWithChildren[];
 };
 
-const { entry } = Astro.props;
+const { entry }: Props = Astro.props;
 const { Content, headings } = await render(entry);
 
 const headingsWithChildren = headings.reduce<MarkdownHeadingWithChildren[]>(
@@ -36,8 +36,9 @@ const headingsWithChildren = headings.reduce<MarkdownHeadingWithChildren[]>(
   [],
 );
 
-
-const headlines = (await getCollection("headline", x => x.data.path?.id === entry.id))
+const headlines = (
+  await getCollection("headline", (x) => x.data.path?.id === entry.id)
+)
   .map((x) => ({
     title: x.data.title ?? "",
     date: x.data.date,
@@ -66,11 +67,11 @@ const headlines = (await getCollection("headline", x => x.data.path?.id === entr
               date={post.date}
               permalink={post.permalink}
               source={post.source}
-              set:html={post.summary}
             >
               <h3 slot="title">
                 <a href={post.permalink}>{post.title}</a>
               </h3>
+              <Fragment set:html={post.summary} />
             </Article>
           ))}
         </article>

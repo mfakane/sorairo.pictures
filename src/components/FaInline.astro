@@ -4,7 +4,7 @@ export interface Props {
   icon: string;
 }
 
-const { type, icon } = Astro.props;
+const { type, icon }: Props = Astro.props;
 ---
 
 <i class={`${type} fa-${icon} fa-fw`} aria-hidden="true"></i>
