@@ -22,6 +22,19 @@
       "runOptions": {
         "runOn": "folderOpen"
       }
+    },
+    {
+      "type": "npm",
+      "script": "lint",
+      "problemMatcher": [
+        "$eslint-stylish"
+      ],
+      "label": "npm: lint",
+      "detail": "eslint .",
+      "presentation": {
+        "reveal": "silent",
+        "revealProblems": "onProblem"
+      }
     }
   ]
 }
