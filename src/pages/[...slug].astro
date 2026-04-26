@@ -7,12 +7,16 @@ type StaticPath = { params: { slug: string }; props: Props };
 
 export async function getStaticPaths(): Promise<StaticPath[]> {
   const blogEntries = await getCollection("blog");
-  const blogCategories = blogEntries
-    .map((entry) => {
-      const lastSlash = entry.id.lastIndexOf("/");
-      return lastSlash >= 0 ? entry.id.slice(0, lastSlash) : null;
-    })
-    .filter((x) => x !== null);
+  const blogCategories = [
+    ...new Set(
+      blogEntries
+        .map((entry) => {
+          const lastSlash = entry.id.lastIndexOf("/");
+          return lastSlash >= 0 ? entry.id.slice(0, lastSlash) : null;
+        })
+        .filter((x) => x !== null),
+    ),
+  ];
 
   return blogEntries
     .map((entry) => ({
