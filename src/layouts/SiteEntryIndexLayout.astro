@@ -1,0 +1,45 @@
+---
+import Article from "@/components/Article.astro";
+import Portrait from "@/components/Portrait.astro";
+import { render, type CollectionEntry } from "astro:content";
+import Layout from "./Layout.astro";
+
+export interface Props {
+  category: string;
+  entries: readonly CollectionEntry<"site">[];
+}
+
+const { category, entries }: Props = Astro.props;
+const articles = [];
+
+for (const entry of entries) {
+  const { Content } = await render(entry);
+  articles.push({ slug: entry.id, data: entry.data, Content });
+}
+
+articles.sort((x, y) =>
+  (x.data.updated ?? x.data.date) < (y.data.updated ?? y.data.date) ? 1 : -1
+);
+---
+
+<Layout title={category}>
+  <main>
+    {
+      articles.map((article) => (
+        <Article
+          date={article.data.date}
+          updated={article.data.updated}
+          permalink={`/${article.slug}`}
+        >
+          <h1 slot="title">
+            <a href={`/${article.slug}`}>{article.data.title}</a>
+          </h1>
+          {article.data.portrait && (
+            <Portrait portrait={article.data.portrait} />
+          )}
+          <article.Content />
+        </Article>
+      ))
+    }
+  </main>
+</Layout>

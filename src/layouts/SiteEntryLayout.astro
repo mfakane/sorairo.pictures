@@ -1,0 +1,93 @@
+---
+import Article from "@/components/Article.astro";
+import Portrait from "@/components/Portrait.astro";
+import TableOfContents from "@/components/TableOfContents.astro";
+import { getArticleSourceFromUrl } from "@/models/ArticleSource";
+import type { MarkdownHeading } from "astro";
+import type { CollectionEntry } from "astro:content";
+import { getCollection, render } from "astro:content";
+import Layout from "./Layout.astro";
+
+export interface Props {
+  entry: CollectionEntry<"site">;
+}
+
+type MarkdownHeadingWithChildren = MarkdownHeading & {
+  children: MarkdownHeadingWithChildren[];
+};
+
+const { entry }: Props = Astro.props;
+const { Content, headings } = await render(entry);
+
+const headingsWithChildren = headings.reduce<MarkdownHeadingWithChildren[]>(
+  (acc, x) => {
+    if (x.depth === 1) {
+      acc.push({ ...x, children: [] });
+    } else {
+      const parent = acc[acc.length - 1];
+      if (parent && x.depth > parent.depth) {
+        parent.children.push({ ...x, children: [] });
+      } else {
+        acc.push({ ...x, children: [] });
+      }
+    }
+    return acc;
+  },
+  [],
+);
+
+const headlines = (
+  await getCollection("headline", (x) => x.data.path?.id === entry.id)
+)
+  .map((x) => ({
+    title: x.data.title ?? "",
+    date: x.data.date,
+    permalink: x.data.href,
+    source: x.data.href ? getArticleSourceFromUrl(x.data.href) : undefined,
+    summary: x.body ?? "",
+    path: x.data.path,
+    image: x.data.image,
+  }))
+  .sort((a, b) => b.date.valueOf() - a.date.valueOf());
+---
+
+<Layout title={entry.data.title}>
+  <main>
+    <Article date={entry.data.date} updated={entry.data.updated}>
+      <h1 slot="title">{entry.data.title}</h1>
+      {entry.data.portrait && <Portrait portrait={entry.data.portrait} />}
+      <Content />
+    </Article>
+    {
+      headlines.length > 0 && (
+        <article>
+          <h2>更新情報</h2>
+          {headlines.map((post) => (
+            <Article
+              date={post.date}
+              permalink={post.permalink}
+              source={post.source}
+            >
+              <h3 slot="title">
+                <a href={post.permalink}>{post.title}</a>
+              </h3>
+              <Fragment set:html={post.summary} />
+            </Article>
+          ))}
+        </article>
+      )
+    }
+  </main>
+  {
+    headingsWithChildren.length > 0 && (
+      <aside>
+        <div class="sticky">
+          <section class="toc">
+            <h2>Contents</h2>
+            <TableOfContents items={headingsWithChildren} />
+          </section>
+        </div>
+      </aside>
+    )
+  }
+</Layout>
