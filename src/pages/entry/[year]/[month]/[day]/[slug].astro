@@ -1,0 +1,36 @@
+---
+import BlogEntryLayout from "@/layouts/BlogEntryLayout.astro";
+import { type CollectionEntry, getCollection } from "astro:content";
+
+type StaticPath = {
+  params: { year: string; month: string; day: string; slug: string };
+  props: Props;
+};
+
+export async function getStaticPaths(): Promise<StaticPath[]> {
+  const blogEntries = await getCollection("blog");
+
+  return blogEntries.map((entry) => {
+    const fileName = entry.id.split("/").at(-1) ?? entry.id;
+    const slug = fileName.replace(/^\d{2}-/, "");
+
+    return {
+      params: {
+        year: entry.data.date.getFullYear().toString(),
+        month: (entry.data.date.getMonth() + 1).toString().padStart(2, "0"),
+        day: entry.data.date.getDate().toString().padStart(2, "0"),
+        slug,
+      },
+      props: { entry } as Props,
+    };
+  });
+}
+
+export interface Props {
+  entry: CollectionEntry<"blog">;
+}
+
+const { entry }: Props = Astro.props;
+---
+
+{entry && <BlogEntryLayout entry={entry} />}

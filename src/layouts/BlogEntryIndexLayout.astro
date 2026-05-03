@@ -1,43 +1,87 @@
 ---
 import Article from "@/components/Article.astro";
-import Portrait from "@/components/Portrait.astro";
+import { getExcerptHtmlFromRenderedContent } from "@/lib/content-preview";
 import { render, type CollectionEntry } from "astro:content";
 import Layout from "./Layout.astro";
 
+function getEntryPermalink(entry: CollectionEntry<"blog">): string {
+  const year = entry.data.date.getFullYear().toString();
+  const month = (entry.data.date.getMonth() + 1).toString().padStart(2, "0");
+  const day = entry.data.date.getDate().toString().padStart(2, "0");
+  const fileName = entry.id.split("/").at(-1) ?? entry.id;
+  const slug = fileName.replace(/^\d{2}-/, "");
+
+  return `/entry/${year}/${month}/${day}/${slug}`;
+}
+
 export interface Props {
-  category: string;
+  title: string;
   entries: readonly CollectionEntry<"blog">[];
 }
 
-const { category, entries }: Props = Astro.props;
-const articles = [];
+const { title, entries }: Props = Astro.props;
+type ArticleContent = Awaited<ReturnType<typeof render>>["Content"];
+
+type ArticleForIndex = {
+  slug: string;
+  permalink: string;
+  data: CollectionEntry<"blog">["data"];
+  excerptHtml?: string;
+  Content?: ArticleContent;
+};
+
+const articles: ArticleForIndex[] = [];
 
 for (const entry of entries) {
+  const excerptHtml = getExcerptHtmlFromRenderedContent(entry.rendered?.html);
+  const permalink = getEntryPermalink(entry);
+
+  if (excerptHtml) {
+    articles.push({
+      slug: entry.id,
+      permalink,
+      data: entry.data,
+      excerptHtml,
+    });
+    continue;
+  }
+
   const { Content } = await render(entry);
-  articles.push({ slug: entry.id, data: entry.data, Content });
+  articles.push({
+    slug: entry.id,
+    permalink,
+    data: entry.data,
+    Content,
+  });
 }
 
 articles.sort((x, y) =>
-  (x.data.updated ?? x.data.date) < (y.data.updated ?? y.data.date) ? 1 : -1
+  (x.data.updated ?? x.data.date) < (y.data.updated ?? y.data.date) ? 1 : -1,
 );
 ---
 
-<Layout title={category}>
+<Layout title={title}>
   <main>
     {
       articles.map((article) => (
         <Article
           date={article.data.date}
           updated={article.data.updated}
-          permalink={`/${article.slug}`}
+          permalink={article.permalink}
         >
           <h1 slot="title">
-            <a href={`/${article.slug}`}>{article.data.title}</a>
+            <a href={article.permalink}>{article.data.title}</a>
           </h1>
-          {article.data.portrait && (
-            <Portrait portrait={article.data.portrait} />
+          {article.excerptHtml ? (
+            <>
+              <Fragment set:html={article.excerptHtml} />
+              <a class="more" href={article.permalink}>
+                Read more
+              </a>
+            </>
+          ) : (
+            article.Content && <article.Content />
           )}
-          <article.Content />
         </Article>
       ))
     }

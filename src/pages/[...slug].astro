@@ -1,15 +1,15 @@
 ---
-import BlogEntryIndexLayout from "@/layouts/BlogEntryIndexLayout.astro";
-import BlogEntryLayout from "@/layouts/BlogEntryLayout.astro";
+import SiteEntryIndexLayout from "@/layouts/SiteEntryIndexLayout.astro";
+import SiteEntryLayout from "@/layouts/SiteEntryLayout.astro";
 import { type CollectionEntry, getCollection } from "astro:content";
 
 type StaticPath = { params: { slug: string }; props: Props };
 
 export async function getStaticPaths(): Promise<StaticPath[]> {
-  const blogEntries = await getCollection("blog");
-  const blogCategories = [
+  const siteEntries = await getCollection("site");
+  const siteCategories = [
     ...new Set(
-      blogEntries
+      siteEntries
         .map((entry) => {
           const lastSlash = entry.id.lastIndexOf("/");
           return lastSlash >= 0 ? entry.id.slice(0, lastSlash) : null;
@@ -18,17 +18,17 @@ export async function getStaticPaths(): Promise<StaticPath[]> {
     ),
   ];
 
-  return blogEntries
+  return siteEntries
     .map((entry) => ({
       params: { slug: entry.id as string },
       props: { entry } as Props,
     }))
     .concat(
-      blogCategories.map((category) => ({
+      siteCategories.map((category) => ({
         params: { slug: category as string },
         props: {
           category,
-          entries: blogEntries.filter((entry) =>
+          entries: siteEntries.filter((entry) =>
             entry.id.startsWith(category + "/"),
           ),
         } as Props,
@@ -38,16 +38,16 @@ export async function getStaticPaths(): Promise<StaticPath[]> {
 
 export interface Props {
   category?: string;
-  entry?: CollectionEntry<"blog">;
-  entries?: readonly CollectionEntry<"blog">[];
+  entry?: CollectionEntry<"site">;
+  entries?: readonly CollectionEntry<"site">[];
 }
 
 const { category, entry, entries }: Props = Astro.props;
 ---
 
-{entry && <BlogEntryLayout entry={entry} />}
+{entry && <SiteEntryLayout entry={entry} />}
 {
   category && entries && (
-    <BlogEntryIndexLayout category={category} entries={entries} />
+    <SiteEntryIndexLayout category={category} entries={entries} />
   )
 }

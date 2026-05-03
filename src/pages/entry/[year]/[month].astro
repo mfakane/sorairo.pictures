@@ -1,0 +1,57 @@
+---
+import BlogEntryIndexLayout from "@/layouts/BlogEntryIndexLayout.astro";
+import { type CollectionEntry, getCollection } from "astro:content";
+
+type StaticPath = {
+  params: { year: string; month: string };
+  props: Props;
+};
+
+export async function getStaticPaths(): Promise<StaticPath[]> {
+  const blogEntries = await getCollection("blog");
+  const groupedEntries = blogEntries.reduce(
+    (groups, entry) => {
+      const year = entry.data.date.getFullYear().toString();
+      const month = (entry.data.date.getMonth() + 1)
+        .toString()
+        .padStart(2, "0");
+      const key = `${year}/${month}`;
+      if (!groups[key]) {
+        groups[key] = [];
+      }
+      groups[key].push(entry);
+      return groups;
+    },
+    {} as Record<string, CollectionEntry<"blog">[]>,
+  );
+
+  return Object.keys(groupedEntries).map((key) => {
+    const [year, month] = key.split("/");
+    return {
+      params: {
+        year: String(year),
+        month: String(month),
+      },
+      props: {
+        year,
+        month,
+        entries: groupedEntries[key],
+      } as Props,
+    };
+  });
+}
+
+export interface Props {
+  year: string;
+  month: string;
+  entries: readonly CollectionEntry<"blog">[];
+}
+
+const { year, month, entries }: Props = Astro.props;
+---
+
+{
+  entries && (
+    <BlogEntryIndexLayout title={`${year}-${month}`} entries={entries} />
+  )
+}

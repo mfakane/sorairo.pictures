@@ -1,0 +1,43 @@
+---
+import BlogEntryIndexLayout from "@/layouts/BlogEntryIndexLayout.astro";
+import { type CollectionEntry, getCollection } from "astro:content";
+
+type StaticPath = {
+  params: { year: string };
+  props: Props;
+};
+
+export async function getStaticPaths(): Promise<StaticPath[]> {
+  const blogEntries = await getCollection("blog");
+  const groupedEntries = blogEntries.reduce(
+    (groups, entry) => {
+      const year = entry.data.date.getFullYear().toString();
+      if (!groups[year]) {
+        groups[year] = [];
+      }
+      groups[year].push(entry);
+      return groups;
+    },
+    {} as Record<string, CollectionEntry<"blog">[]>,
+  );
+
+  return Object.keys(groupedEntries).map((year) => ({
+    params: {
+      year,
+    },
+    props: {
+      year,
+      entries: groupedEntries[year],
+    } as Props,
+  }));
+}
+
+export interface Props {
+  year: string;
+  entries: readonly CollectionEntry<"blog">[];
+}
+
+const { year, entries }: Props = Astro.props;
+---
+
+{entries && <BlogEntryIndexLayout title={`${year}`} entries={entries} />}
