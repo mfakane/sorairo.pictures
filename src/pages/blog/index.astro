@@ -1,0 +1,19 @@
+---
+import Pager from "@/components/Pager.astro";
+import BlogEntryIndexLayout from "@/layouts/BlogEntryIndexLayout.astro";
+import { getSortedBlogEntries } from "@/lib/paginate-blog";
+
+const pageSize = 5;
+const allEntries = await getSortedBlogEntries();
+const entries = allEntries.slice(0, pageSize);
+const currentPage = 1;
+const lastPage = Math.max(1, Math.ceil(allEntries.length / pageSize));
+---
+
+{
+  entries && (
+    <BlogEntryIndexLayout title={`Blog`} entries={entries}>
+      <Pager currentPage={currentPage} lastPage={lastPage} urlPrefix="/blog" />
+    </BlogEntryIndexLayout>
+  )
+}

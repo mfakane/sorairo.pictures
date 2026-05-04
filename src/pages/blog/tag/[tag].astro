@@ -1,0 +1,28 @@
+---
+import Pager from "@/components/Pager.astro";
+import BlogEntryIndexLayout from "@/layouts/BlogEntryIndexLayout.astro";
+import { getTagIndexPaths } from "@/lib/paginate-blog";
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+
+export const getStaticPaths = (async () =>
+  getTagIndexPaths()) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+---
+
+<meta name="robots" content="noindex" />
+
+{
+  (Astro.props as Props).entries && (
+    <BlogEntryIndexLayout
+      title={`#${(Astro.props as Props).tag}`}
+      entries={(Astro.props as Props).entries}
+    >
+      <Pager
+        currentPage={(Astro.props as Props).currentPage}
+        lastPage={(Astro.props as Props).lastPage}
+        urlPrefix={`/blog/tag/${(Astro.props as Props).tag}`}
+      />
+    </BlogEntryIndexLayout>
+  )
+}

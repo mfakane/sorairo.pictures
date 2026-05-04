@@ -1,5 +1,6 @@
 ---
 import Article from "@/components/Article.astro";
+import BlogSidebar from "@/components/BlogSidebar.astro";
 import { getExcerptHtmlFromRenderedContent } from "@/lib/content-preview";
 import { render, type CollectionEntry } from "astro:content";
 import Layout from "./Layout.astro";
@@ -68,6 +69,8 @@ articles.sort((x, y) =>
           date={article.data.date}
           updated={article.data.updated}
           permalink={article.permalink}
+          category={article.data.category}
+          tags={article.data.tags ?? []}
         >
           <h1 slot="title">
             <a href={article.permalink}>{article.data.title}</a>
@@ -85,5 +88,9 @@ articles.sort((x, y) =>
         </Article>
       ))
     }
+    <slot />
   </main>
+  <aside>
+    <BlogSidebar />
+  </aside>
 </Layout>

@@ -26,6 +26,6 @@ const { date, permalink, source, tags }: Props = Astro.props;
       ))
   }
   <slot name="title" />
-  {source && <ArticleHeaderCategory category={source} />}
+  {source && <ArticleHeaderCategory source={source} />}
   {tags && <ArticleHeaderTags tags={tags} />}
 </article>

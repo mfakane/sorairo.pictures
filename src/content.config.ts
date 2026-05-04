@@ -8,8 +8,8 @@ const blogCollection = defineCollection({
   schema: () =>
     z.object({
       title: z.string(),
-      date: z.date(),
-      updated: z.date().optional(),
+      date: z.coerce.date(),
+      updated: z.coerce.date().optional(),
       tags: z.array(z.string()).optional(),
       category: z.enum(["diary", "kb", "notice", "review"] as const satisfies BlogCategory[]),
     }),
@@ -20,8 +20,8 @@ const siteCollection = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
-      date: z.date(),
-      updated: z.date().optional(),
+      date: z.coerce.date(),
+      updated: z.coerce.date().optional(),
       portrait: z
         .union([
           image(),
@@ -44,7 +44,7 @@ const headlineCollection = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
-      date: z.date(),
+      date: z.coerce.date(),
       href: z.url(),
       path: reference("site").optional(),
       image: z.union([

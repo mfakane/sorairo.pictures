@@ -1,6 +1,6 @@
 export type BlogCategory = "diary" | "kb" | "notice" | "review";
 
-export function getBlogCategoryName(category: BlogCategory) {
+export function getBlogCategoryDisplayName(category: BlogCategory) {
   switch (category) {
     case "diary":
       return "Diary";

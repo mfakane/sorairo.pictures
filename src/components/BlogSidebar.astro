@@ -1,0 +1,98 @@
+---
+import {
+getBlogCategoryDisplayName,
+type BlogCategory,
+} from "@/models/BlogCategory";
+import { getCollection } from "astro:content";
+
+const blogEntries = await getCollection("blog");
+const entriesByCategory = blogEntries.reduce<
+  Record<string, typeof blogEntries>
+>((acc, entry) => {
+  const category = entry.data.category;
+  if (!acc[category]) {
+    acc[category] = [];
+  }
+  acc[category].push(entry);
+  return acc;
+}, {});
+const entriesByTag = blogEntries.reduce<Record<string, typeof blogEntries>>(
+  (acc, entry) => {
+    const tags = entry.data.tags ?? [];
+    for (const tag of tags) {
+      if (!acc[tag]) {
+        acc[tag] = [];
+      }
+      acc[tag].push(entry);
+    }
+    return acc;
+  },
+  {},
+);
+const entriesByMonth = blogEntries.reduce<Record<string, typeof blogEntries>>(
+  (acc, entry) => {
+    const year = entry.data.date.getFullYear();
+    const month = (entry.data.date.getMonth() + 1).toString().padStart(2, "0");
+    const key = `${year}-${month}`;
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(entry);
+    return acc;
+  },
+  {},
+);
+---
+
+<section>
+  <h2>Categories</h2>
+  <ul>
+    {
+      Object.entries(entriesByCategory)
+        .toSorted(([, a], [, b]) => b.length - a.length)
+        .map(([category, entries]) => (
+          <li>
+            <a href={`/categories/${category}`}>
+              {getBlogCategoryDisplayName(category as BlogCategory)}
+            </a>
+            <span class="list-count">({entries.length})</span>
+          </li>
+        ))
+    }
+  </ul>
+</section>
+
+<section>
+  <h2>Tags</h2>
+  <ul class="tags">
+    {
+      Object.entries(entriesByTag)
+        .toSorted(([, a], [, b]) => b.length - a.length)
+        .map(([tag, entries]) => (
+          <li>
+            <a href={`/tags/${tag}`}>{tag}</a>
+            <span class="list-count">({entries.length})</span>
+          </li>
+        ))
+    }
+  </ul>
+</section>
+
+<section>
+  <h2>Archives</h2>
+  <ul>
+    {
+      Object.entries(entriesByMonth)
+        .toSorted(([a], [b]) => b.localeCompare(a))
+        .map(([yearMonth, entries]) => {
+          const [year, month] = yearMonth.split("-");
+          return (
+            <li>
+              <a href={`/blog/archive/${year}/${month}`}>{yearMonth}</a>
+              <span class="list-count">({entries.length})</span>
+            </li>
+          );
+        })
+    }
+  </ul>
+</section>

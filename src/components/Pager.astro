@@ -1,0 +1,22 @@
+---
+export type Props = {
+  currentPage: number;
+  lastPage: number;
+  urlPrefix: string;
+};
+
+const { currentPage, lastPage, urlPrefix } = Astro.props;
+---
+
+<nav class="pager">
+  {
+    Array.from({ length: lastPage }, (_, i) => i + 1).map((page) => (
+      <a
+        href={page === 1 ? urlPrefix : `${urlPrefix}/page/${page}`}
+        class={page === currentPage ? "page-number current" : "page-number"}
+      >
+        {page}
+      </a>
+    ))
+  }
+</nav>

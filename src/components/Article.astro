@@ -1,5 +1,6 @@
 ---
 import type { ArticleSource } from "@/models/ArticleSource";
+import type { BlogCategory } from "@/models/BlogCategory";
 import ArticleHeaderCategory from "./Article/HeaderCategory.astro";
 import ArticleHeaderTags from "./Article/HeaderTags.astro";
 import DateTime from "./DateTime.astro";
@@ -8,15 +9,17 @@ export interface Props {
   date?: Date | undefined;
   updated?: Date | undefined;
   permalink?: URL | undefined;
+  category?: BlogCategory | undefined;
   source?: ArticleSource | undefined;
-  tags?: readonly string[];
+  tags?: readonly string[] | undefined;
   image?: Image | undefined;
 }
 
 type Image = string | { title: string; text: string };
 type URL = string | { title: string; text: string; favicon: string };
 
-const { date, updated, permalink, source, tags, image }: Props = Astro.props;
+const { date, updated, permalink, category, source, tags, image }: Props =
+  Astro.props;
 ---
 
 <article>
@@ -36,6 +39,7 @@ const { date, updated, permalink, source, tags, image }: Props = Astro.props;
             <DateTime date={date} updated={updated} />
           ))
       }
+      {category && <ArticleHeaderCategory category={category} />}
       {source && <ArticleHeaderCategory source={source} />}
       {tags && <ArticleHeaderTags tags={tags} />}
     </div>

@@ -1,0 +1,28 @@
+---
+import Pager from "@/components/Pager.astro";
+import BlogEntryIndexLayout from "@/layouts/BlogEntryIndexLayout.astro";
+import { getMonthPagePaths } from "@/lib/paginate-blog";
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+
+export const getStaticPaths = (async ({ paginate }) =>
+  getMonthPagePaths(paginate)) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+---
+
+<meta name="robots" content="noindex" />
+
+{
+  (Astro.props as Props).page.data && (
+    <BlogEntryIndexLayout
+      title={`${(Astro.props as Props).year}-${(Astro.props as Props).month}`}
+      entries={(Astro.props as Props).page.data}
+    >
+      <Pager
+        currentPage={(Astro.props as Props).page.currentPage}
+        lastPage={(Astro.props as Props).page.lastPage}
+        urlPrefix={`/blog/archive/${(Astro.props as Props).year}/${(Astro.props as Props).month}`}
+      />
+    </BlogEntryIndexLayout>
+  )
+}

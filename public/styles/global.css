@@ -104,7 +104,7 @@ blockquote {
 
 img.portrait {
     border-radius: 50%;
-        object-fit: cover;
+    object-fit: cover;
 }
 
 figure.wrap-link {
@@ -301,7 +301,7 @@ body>aside .sticky {
     max-height: calc(5em * 1.5);
     padding-bottom: calc(1em * 1.5);
 }
-    
+
 .showcase article .article-content::after {
     position: absolute;
     display: block;
@@ -312,7 +312,7 @@ body>aside .sticky {
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
     content: "";
 }
-    
+
 .showcase article footer {
     margin-top: 0;
 }
@@ -383,12 +383,11 @@ article header.with-image .article-title {
     justify-content: center;
     align-items: baseline;
     list-style: none;
-    color: var(--accent);
     gap: 4px;
 }
 
 article header.with-image .article-title :is(time, ul.tags, .category) {
-  color: lightgray;
+    color: lightgray;
 }
 
 .article-title li {
@@ -402,6 +401,15 @@ article header.with-image .article-title :is(time, ul.tags, .category) {
 
 .article-title ul.tags {
     grid-area: tags;
+    margin: 0;
+    margin-right: auto;
+    padding: 0;
+}
+
+ul.tags li {
+    display: block;
+    margin: 0;
+    padding: 0;
 }
 
 .article-title .category {
@@ -429,6 +437,10 @@ aside :is(h1, h2, h3, h4, h5, h6) {
     letter-spacing: 0.4em;
     line-height: initial;
     text-transform: uppercase;
+}
+
+.list-count {
+    color: #808080;
 }
 
 table {
@@ -486,4 +498,21 @@ a.card .card-title {
 
 a.card .card-description {
     margin: 0 0 4px 0;
+}
+
+nav.pager {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 32px 0;
+}
+
+nav.pager a {
+    display: block;
+    padding: 8px;
+}
+
+nav.pager .current {
+    color: #808080;
 }

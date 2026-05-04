@@ -37,7 +37,12 @@ const headingsWithChildren = headings.reduce<MarkdownHeadingWithChildren[]>(
 
 <Layout title={entry.data.title}>
   <main>
-    <Article date={entry.data.date} updated={entry.data.updated}>
+    <Article
+      date={entry.data.date}
+      updated={entry.data.updated}
+      category={entry.data.category}
+      tags={entry.data.tags ?? []}
+    >
       <h1 slot="title">{entry.data.title}</h1>
       <Content />
     </Article>

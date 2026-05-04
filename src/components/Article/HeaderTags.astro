@@ -9,8 +9,10 @@ const { tags }: Props = Astro.props;
 {
   tags.length && (
     <ul class="tags">
-      {tags.map((x) => (
-        <li>{x}</li>
+      {tags.map((tag) => (
+        <li>
+          <a href={`/tags/${tag}`}>#{tag}</a>
+        </li>
       ))}
     </ul>
   )

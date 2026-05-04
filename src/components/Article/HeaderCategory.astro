@@ -3,10 +3,14 @@ import {
   getUrlFromArticleSource,
   type ArticleSource,
 } from "@/models/ArticleSource";
+import {
+  getBlogCategoryDisplayName,
+  type BlogCategory,
+} from "@/models/BlogCategory";
 
 export interface Props {
   source?: ArticleSource;
-  category?: string;
+  category?: BlogCategory;
 }
 
 const { source, category }: Props = Astro.props;
@@ -26,7 +30,7 @@ const icon = (() => {
 ---
 
 {
-  source?.length && (
+  source && (
     <a class="category" href={getUrlFromArticleSource(source)}>
       <i class={`${icon} fa-fw`} aria-hidden="true" />
       {source}
@@ -34,10 +38,10 @@ const icon = (() => {
   )
 }
 {
-  category?.length && (
-    <a class="category">
+  category && (
+    <a class="category" href={`/categories/${category}`}>
       <i class="fas fa-folder fa-fw" aria-hidden="true" />
-      {category}
+      {getBlogCategoryDisplayName(category)}
     </a>
   )
 }
