@@ -5,8 +5,6 @@ updated: 2013-06-01 00:00:00
 portrait: ./thumbnail.png
 ---
 
-import DownloadLink from "@/components/DownloadLink.astro";
-
-<DownloadLink path="3dcg-models/Rasrry/" />
+https://download.sorairo.pictures/3dcg-models/Rasrry/Rasrry.zip
 
 オリジナル ラズリー・マキシマ

@@ -7,11 +7,8 @@ portrait:
     href: http://seiga.nicovideo.jp/seiga/im3060770
 ---
 
-import DownloadLink from "@/components/DownloadLink.astro";
-import FaInline from "@/components/FaInline.astro";
-
-<DownloadLink path="mme-effects/HAToon2/HAToon2_r14.zip" />
-<FaInline type="fas" icon="check" /> MME, MMM 対応
+https://download.sorairo.pictures/mme-effects/HAToon2/HAToon2_r14.zip
+:fas-check: MME, MMM 対応
 
 - HAToon からより自由度を高め、専用のエディタを使うことで自由に塗りの組み合わせを編集できるようになったトゥーンシェーダです。
 - 色相シフトを使用した汎用的な設定や、塗りにグラデーションを使用した設定、メタリックな質感設定などをサンプルとして同梱しています。

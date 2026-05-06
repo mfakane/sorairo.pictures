@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
+    "start": "astro dev --port 4321",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
@@ -14,10 +14,15 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.4",
+    "@remark-embedder/core": "^3.0.3",
+    "@remark-embedder/transformer-oembed": "^5.0.1",
     "astro": "^6.1.9",
     "astro-font": "^1.0.0",
     "jsdom": "^29.0.1",
-    "remark-breaks": "^4.0.0"
+    "mdast-util-directive": "^3.1.0",
+    "mdast-util-find-and-replace": "^3.0.2",
+    "remark-breaks": "^4.0.0",
+    "remark-directive": "^4.0.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",

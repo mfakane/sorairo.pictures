@@ -4,9 +4,7 @@ date: 2011-11-17 00:00:00
 updated: 2011-11-17 00:00:00
 ---
 
-import DownloadLink from "@/components/DownloadLink.astro";
-
-<DownloadLink path="apps/FAC/" />
+https://download.sorairo.pictures/apps/FAC/FAC_0.5.zip
 
 東方非想天則用の硬直差計算機です。  
 プラクティスでこれを起動し、相手に攻撃を当てるとその状況での硬直差を計算します。

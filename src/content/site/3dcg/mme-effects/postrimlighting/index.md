@@ -7,11 +7,8 @@ portrait:
     href: http://seiga.nicovideo.jp/seiga/im2044750
 ---
 
-import DownloadLink from "@/components/DownloadLink.astro";
-import FaInline from "@/components/FaInline.astro";
-
-<DownloadLink path="mme-effects/PostRimLighting/PostRimLighting_r4.zip" />
-<FaInline type="fas" icon="check" /> MME, MMM 対応
+https://download.sorairo.pictures/mme-effects/PostRimLighting/PostRimLighting_r4.zip
+:fas-check: MME, MMM 対応
 
 - モデルの輪郭を光らせることで、逆光の時に正面まで回り込む光を再現します。
 - アクセサリの値を編集することで色や強度、広がりなどを調整できます。

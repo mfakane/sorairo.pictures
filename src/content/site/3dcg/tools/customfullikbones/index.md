@@ -4,8 +4,6 @@ date: 2013-06-30 00:00:00
 updated: 2013-06-30 00:00:00
 ---
 
-import DownloadLink from '@/components/DownloadLink.astro'
-
-<DownloadLink path="3dcg-tools/CustomFullIKBones/" />
+https://download.sorairo.pictures/3dcg-tools/CustomFullIKBones/CustomFullIKBones_0.9.zip
 
 - dondon 式ミクさんカスタム版のボーン構造を他のモデルに適用する PMD エディタ用のプラグインです。

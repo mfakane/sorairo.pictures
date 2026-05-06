@@ -5,8 +5,6 @@ updated: 2015-12-09 00:00:00
 portrait: ./thumbnail.png
 ---
 
-import DownloadLink from "@/components/DownloadLink.astro";
-
-<DownloadLink path="3dcg-models/Minya2/" />
+https://download.sorairo.pictures/3dcg-models/Minya2/Minya2.zip
 
 オリジナル ミニア・アリサカ

@@ -5,9 +5,7 @@ updated: 2013-12-20 00:00:00
 portrait: ./thumbnail.png
 ---
 
-import DownloadLink from "@/components/DownloadLink.astro";
-
-<DownloadLink path="3dcg-models/LS_Alice_K/" />
+https://download.sorairo.pictures/3dcg-models/LS_Alice_K/LS_Alice_K.zip
 
 鉄道むすめ 久慈ありす
 

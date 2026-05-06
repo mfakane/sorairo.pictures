@@ -5,9 +5,7 @@ updated: 2013-06-30 00:00:00
 portrait: ./thumbnail.png
 ---
 
-import DownloadLink from "@/components/DownloadLink.astro";
-
-<DownloadLink path="3dcg-models/Temjin_707S/" />
+https://download.sorairo.pictures/3dcg-models/Temjin_707S/Temjin_707S.zip
 
 電脳戦機バーチャロン マーズ MZV-707-S "TEMJIN 707 S"
 

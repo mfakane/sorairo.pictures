@@ -7,7 +7,7 @@ const { tags }: Props = Astro.props;
 ---
 
 {
-  tags.length && (
+  tags && (
     <ul class="tags">
       {tags.map((tag) => (
         <li>

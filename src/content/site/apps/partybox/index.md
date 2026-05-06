@@ -4,9 +4,7 @@ date: 2011-11-04 00:00:00
 updated: 2011-11-04 00:00:00
 ---
 
-import DownloadLink from "@/components/DownloadLink.astro";
-
-<DownloadLink path="apps/PartyBox/" />
+https://download.sorairo.pictures/apps/PartyBox/PartyBox_05.zip
 
 2010/08/31 にオンラインサービスを終了した[パーティーキャッスル](http://blog.square-enix.com/partycastle/)のオフライン版エディタのパーツ管理ツールです。
 

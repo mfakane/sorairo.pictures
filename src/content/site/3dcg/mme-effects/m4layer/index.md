@@ -9,11 +9,8 @@ portrait:
     href: https://twitter.com/mfakane/status/1563691329703788544
 ---
 
-import DownloadLink from "@/components/DownloadLink.astro";
-import FaInline from "@/components/FaInline.astro";
-
-<DownloadLink path="mme-effects/M4Layer/M4Layer_r12.zip" />
-<FaInline type="fas" icon="check" /> MME, MMM 対応
+https://download.sorairo.pictures/mme-effects/M4Layer/M4Layer_r12.zip
+:fas-check: MME, MMM 対応
 
 - 覆い焼き、ソフトライト、オーバーレイなど、画像編集ソフトにあるレイヤーの合成モードのような機能を実現するポストエフェクト (M4Layer) およびシェーダエフェクト (M4LayerShader) のセットです。
 - RT (LayerRT / BelowRT / AboveRT) 上でポストエフェクトやシェーダを適用することで、それより下にある RT に描画結果を合成できます。

@@ -5,11 +5,8 @@ updated: 2013-04-05 00:00:00
 portrait: ./thumbnail.png
 ---
 
-import DownloadLink from "@/components/DownloadLink.astro";
-import FaInline from "@/components/FaInline.astro";
-
-<DownloadLink path="mme-effects/M4Toon/M4Toon_r3.zip" />
-<FaInline type="fas" icon="check" /> MME, MMM 対応
+https://download.sorairo.pictures/mme-effects/M4Toon/M4Toon_r3.zip
+:fas-check: MME, MMM 対応
 
 - パラメータの多さが特徴的なトゥーンっぽいシェーダです。
 - 付属のコントローラ pmd を使用して簡単に調整することができます。

@@ -3,12 +3,27 @@
   "tasks": [
     {
       "type": "npm",
+      "script": "build",
+      "problemMatcher": [
+        "$tsc"
+      ],
+      "label": "npm: build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "silent",
+        "revealProblems": "onProblem"
+      }
+    },
+    {
+      "type": "npm",
       "script": "type-check",
       "problemMatcher": [
         "$tsc"
       ],
       "label": "npm: type-check",
-      "detail": "tsc --noEmit",
       "presentation": {
         "reveal": "silent",
         "revealProblems": "onProblem"
@@ -30,7 +45,6 @@
         "$eslint-stylish"
       ],
       "label": "npm: lint",
-      "detail": "eslint .",
       "presentation": {
         "reveal": "silent",
         "revealProblems": "onProblem"

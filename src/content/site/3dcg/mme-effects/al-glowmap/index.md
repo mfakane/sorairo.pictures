@@ -7,11 +7,8 @@ portrait:
     href: http://seiga.nicovideo.jp/seiga/im2099239
 ---
 
-import DownloadLink from "@/components/DownloadLink.astro";
-import FaInline from "@/components/FaInline.astro";
-
-<DownloadLink path="mme-effects/AL_GlowMap/AL_GlowMap_r2.zip" />
-<FaInline type="fas" icon="check" /> MME, MMM 対応
+https://download.sorairo.pictures/mme-effects/AL_GlowMap/AL_GlowMap_r2.zip
+:fas-check: MME, MMM 対応
 
 - 光らせたい場所に光らせたい色を置いたテクスチャを用意するとその通りに光らせる AutoLuminous 用のセレクタです。
 - WorkingFloorAL にも対応しています。

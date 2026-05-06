@@ -1,0 +1,59 @@
+import type { RemarkPlugin } from "@astrojs/markdown-remark";
+import mdx from "@astrojs/mdx";
+import fauxRemarkEmbedder, { type RemarkEmbedderOptions } from "@remark-embedder/core";
+import fauxOembedTransformer, { type Config } from "@remark-embedder/transformer-oembed";
+import { defineConfig } from "astro/config";
+import path from "path";
+import remarkBreaks from "remark-breaks";
+import remarkDirective from "remark-directive";
+import { rehypeFigure } from "./src/lib/rehype-figure";
+import { rehypeImgProps } from "./src/lib/rehype-imgprops";
+import { remarkDownload } from "./src/lib/remark-download";
+import { remarkFa } from "./src/lib/remark-fa";
+
+type MaybeDefault<T> = T | { default: T };
+
+const unwrapDefault = <T>(mod: MaybeDefault<T>): T =>
+  (typeof mod === "object" && mod !== null && "default" in mod)
+    ? mod.default
+    : mod;
+
+const remarkEmbedder = unwrapDefault(fauxRemarkEmbedder);
+const oembedTransformer = unwrapDefault(fauxOembedTransformer);
+
+const defaultLayoutPlugin: RemarkPlugin = () =>
+  (tree, file) => {
+    const relativePath = path.relative(file.cwd, file.history[0]);
+
+    if (relativePath.startsWith("src/pages/") &&
+      file.data.astro?.frontmatter) {
+      file.data.astro.frontmatter.layout ??= "@/layouts/MarkdownLayout.astro";
+    };
+  };
+
+// https://astro.build/config
+export default defineConfig({
+  site: "https://sorairo.pictures/",
+  markdown: {
+    remarkPlugins: [
+      defaultLayoutPlugin,
+      remarkFa,
+      remarkBreaks,
+      remarkDownload,
+      remarkDirective,
+      [remarkEmbedder as RemarkPlugin, {
+        transformers: [
+          [oembedTransformer, { params: { dnt: true, omit_script: true } } as Config]
+        ]
+      } as RemarkEmbedderOptions],
+    ],
+    rehypePlugins: [
+      rehypeImgProps,
+      rehypeFigure
+    ]
+  },
+  integrations: [mdx()],
+  prefetch: {
+    prefetchAll: true
+  }
+});

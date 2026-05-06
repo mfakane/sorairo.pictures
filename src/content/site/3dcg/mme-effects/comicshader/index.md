@@ -7,10 +7,7 @@ portrait:
     href: http://seiga.nicovideo.jp/seiga/im2144816
 ---
 
-import DownloadLink from "@/components/DownloadLink.astro";
-import FaInline from "@/components/FaInline.astro";
-
-<DownloadLink path="mme-effects/ComicShader/ComicShader_r1.zip" />
-<FaInline type="fas" icon="check" /> MME, MMM 対応
+https://download.sorairo.pictures/mme-effects/ComicShader/ComicShader_r1.zip
+:fas-check: MME, MMM 対応
 
 - カラーにスクリーントーン表現を合成します。ベタ塗りもします。

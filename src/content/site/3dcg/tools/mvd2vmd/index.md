@@ -4,8 +4,6 @@ date: 2019-03-14 00:00:00
 updated: 2019-03-14 00:00:00
 ---
 
-import DownloadLink from '@/components/DownloadLink.astro'
-
-<DownloadLink path="3dcg-tools/Mvd2Vmd/" />
+https://download.sorairo.pictures/3dcg-tools/Mvd2Vmd/Mvd2Vmd_07.zip
 
 - MikuMikuMoving のモーションデータファイル .mvd を .pmx とともに渡すと、レイヤーに対応するよう多段化された .pmx の生成および .vmd への変換を行うツールです。

@@ -4,9 +4,7 @@ date: 2016-07-24 00:00:00
 updated: 2022-12-31 15:26:00
 ---
 
-import DownloadLink from '@/components/DownloadLink.astro'
-
-<DownloadLink source="github" path="MikuMikuMoving-Plugins" />
+[:fas-download: Download](https://github.com/mfakane/MikuMikuMoving-Plugins/releases)
 
 MikuMikuMoving 用のプラグインの詰め合わせです。
 以下のプラグインが含まれています。

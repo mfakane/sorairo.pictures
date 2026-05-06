@@ -12,7 +12,7 @@
       "type": "node-terminal",
       "request": "launch",
       "name": "Server",
-      "command": "npm run dev -- --port 4321",
+      "command": "npm run dev",
       "autoAttachChildProcesses": true
     }
   ],

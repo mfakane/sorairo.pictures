@@ -5,8 +5,6 @@ updated: 2012-07-15 00:00:00
 portrait: "./explosion.png"
 ---
 
-import DownloadLink from '@/components/DownloadLink.astro'
-
-<DownloadLink path="3dcg-tools/Explosion/Explosion_0.1.zip" />
+https://download.sorairo.pictures/3dcg-tools/Explosion/Explosion_0.1.zip
 
 選択された面を分離し、法線方向に移動させたり、回転させたり、拡大縮小したりします。

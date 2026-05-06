@@ -131,7 +131,6 @@ figure.image {
     padding: 0;
     text-align: center;
     line-height: 1;
-
 }
 
 figure.image img {
@@ -151,7 +150,6 @@ figure.image figcaption {
     background: rgba(0, 0, 0, 0.5);
     border-radius: 0 4px 0 4px;
 }
-
 body>header {
     grid-area: header;
     margin: 0 0 16px 0;
@@ -481,6 +479,10 @@ code,
 
 code {
     padding: 2px;
+}
+
+pre code {
+    display: block;
 }
 
 a.card {

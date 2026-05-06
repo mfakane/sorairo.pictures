@@ -5,9 +5,7 @@ updated: 2012-05-04 00:00:00
 portrait: ./thumbnail.png
 ---
 
-import DownloadLink from "@/components/DownloadLink.astro";
-
-<DownloadLink path="3dcg-models/Z1_Series/" />
+https://download.sorairo.pictures/3dcg-models/Z1_Series/Z1_Series.zip
 
 オリジナル HZ1 "St. Piccadilly"
 オリジナル MZ1 "St. Northern"
