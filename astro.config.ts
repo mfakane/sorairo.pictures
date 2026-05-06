@@ -1,10 +1,11 @@
 import type { RemarkPlugin } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
-import fauxRemarkEmbedder, { type RemarkEmbedderOptions } from "@remark-embedder/core";
+import fauxRemarkEmbedder from "@remark-embedder/core";
 import fauxOembedTransformer, { type Config } from "@remark-embedder/transformer-oembed";
 import relativeLinks from "astro-relative-links";
 import { defineConfig } from "astro/config";
 import path from "path";
+import remarkBehead from "remark-behead";
 import remarkBreaks from "remark-breaks";
 import remarkDirective from "remark-directive";
 import { rehypeFigure } from "./src/lib/rehype-figure";
@@ -48,7 +49,8 @@ export default defineConfig({
         transformers: [
           [oembedTransformer, { params: { dnt: true, omit_script: true } } as Config]
         ]
-      } as RemarkEmbedderOptions],
+      } as Parameters<typeof remarkEmbedder>[0]],
+      [remarkBehead, { minDepth: 2 } as Parameters<typeof remarkBehead>[0]]
     ],
     rehypePlugins: [
       rehypeImgProps,
