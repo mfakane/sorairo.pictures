@@ -41,7 +41,7 @@ const { date, updated, permalink, category, source, tags, image }: Props =
       }
       {category && <ArticleHeaderCategory category={category} />}
       {source && <ArticleHeaderCategory source={source} />}
-      {tags && <ArticleHeaderTags tags={tags} />}
+      {tags?.length ? <ArticleHeaderTags tags={tags} /> : undefined}
     </div>
 
     {typeof image === "string" && <img src={image} alt="" />}
