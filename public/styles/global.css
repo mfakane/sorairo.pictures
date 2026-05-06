@@ -502,6 +502,54 @@ a.card .card-description {
     margin: 0 0 4px 0;
 }
 
+.og-card-container a {
+    display: grid;
+    grid-template:
+        "hero hero"
+        "info image"
+        / 1fr auto;
+    margin: 16px 0;
+    padding: 16px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+}
+
+.og-card-container a .og-card-info {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 4px;
+    grid-area: info;
+}
+
+.og-card-container a .og-card-url-container {
+    display: flex;
+    margin-top: auto;
+    align-items: center;
+    gap: 4px;
+}
+
+.og-card-container a .og-card-image-container {
+    display: flex;
+    grid-area: image;
+}
+
+.og-card-container a .og-card-image-container:has(img[width][height]) {
+    margin: -16px;
+    margin-bottom: 16px;
+    grid-area: hero;
+}
+
+.og-card-container a .og-card-image-container img {
+    width: auto;
+    height: 96px;
+}
+
+.og-card-container a .og-card-image-container img[width][height] {
+    width: 100%;
+    height: auto;
+}
+
 nav.pager {
     display: flex;
     flex-direction: row;

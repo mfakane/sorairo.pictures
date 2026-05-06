@@ -5,6 +5,7 @@ import fauxOembedTransformer, { type Config } from "@remark-embedder/transformer
 import relativeLinks from "astro-relative-links";
 import { defineConfig } from "astro/config";
 import path from "path";
+import rehypeOGCard, { type RehypeOGCardOptions } from "rehype-og-card";
 import remarkBehead from "remark-behead";
 import remarkBreaks from "remark-breaks";
 import remarkDirective from "remark-directive";
@@ -54,7 +55,11 @@ export default defineConfig({
     ],
     rehypePlugins: [
       rehypeImgProps,
-      rehypeFigure
+      rehypeFigure,
+      [rehypeOGCard, {
+        buildCache: true,
+        enableSameTextURLConversion: true
+      } as RehypeOGCardOptions]
     ]
   },
   integrations: [mdx(), relativeLinks()],
