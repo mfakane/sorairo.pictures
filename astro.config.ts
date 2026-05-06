@@ -2,6 +2,7 @@ import type { RemarkPlugin } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
 import fauxRemarkEmbedder, { type RemarkEmbedderOptions } from "@remark-embedder/core";
 import fauxOembedTransformer, { type Config } from "@remark-embedder/transformer-oembed";
+import relativeLinks from "astro-relative-links";
 import { defineConfig } from "astro/config";
 import path from "path";
 import remarkBreaks from "remark-breaks";
@@ -52,7 +53,7 @@ export default defineConfig({
       rehypeFigure
     ]
   },
-  integrations: [mdx()],
+  integrations: [mdx(), relativeLinks()],
   prefetch: {
     prefetchAll: true
   }
