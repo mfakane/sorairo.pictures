@@ -1,19 +1,10 @@
 ---
 import Article from "@/components/Article.astro";
 import BlogSidebar from "@/components/BlogSidebar.astro";
+import { getBlogEntryPermalink } from "@/lib/blog-entry-path";
 import { getExcerptHtmlFromRenderedContent } from "@/lib/content-preview";
 import { render, type CollectionEntry } from "astro:content";
 import Layout from "./Layout.astro";
-
-function getEntryPermalink(entry: CollectionEntry<"blog">): string {
-  const year = entry.data.date.getFullYear().toString();
-  const month = (entry.data.date.getMonth() + 1).toString().padStart(2, "0");
-  const day = entry.data.date.getDate().toString().padStart(2, "0");
-  const fileName = entry.id.split("/").at(-1) ?? entry.id;
-  const slug = fileName.replace(/^\d{2}-/, "");
-
-  return `/entry/${year}/${month}/${day}/${slug}`;
-}
 
 export interface Props {
   title: string;
@@ -35,7 +26,7 @@ const articles: ArticleForIndex[] = [];
 
 for (const entry of entries) {
   const excerptHtml = getExcerptHtmlFromRenderedContent(entry.rendered?.html);
-  const permalink = getEntryPermalink(entry);
+  const permalink = getBlogEntryPermalink(entry);
 
   if (excerptHtml) {
     articles.push({

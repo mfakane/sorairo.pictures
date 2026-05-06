@@ -11,6 +11,7 @@ import { rehypeFigure } from "./src/lib/rehype-figure";
 import { rehypeImgProps } from "./src/lib/rehype-imgprops";
 import { remarkDownload } from "./src/lib/remark-download";
 import { remarkFa } from "./src/lib/remark-fa";
+import { remarkMarkdownLinks } from "./src/lib/remark-markdown-links";
 
 type MaybeDefault<T> = T | { default: T };
 
@@ -38,6 +39,7 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [
       defaultLayoutPlugin,
+      remarkMarkdownLinks,
       remarkFa,
       remarkBreaks,
       remarkDownload,

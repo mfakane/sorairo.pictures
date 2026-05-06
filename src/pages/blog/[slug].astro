@@ -1,5 +1,6 @@
 ---
 import BlogEntryLayout from "@/layouts/BlogEntryLayout.astro";
+import { getBlogEntryRouteParams } from "@/lib/blog-entry-path";
 import { type CollectionEntry, getCollection } from "astro:content";
 
 type StaticPath = {
@@ -11,13 +12,9 @@ export async function getStaticPaths(): Promise<StaticPath[]> {
   const blogEntries = await getCollection("blog");
 
   return blogEntries.map((entry) => {
-    const fileName = entry.id.split("/").at(-1) ?? entry.id;
-    const slug = fileName.replace(/^\d{2}-/, "");
-
+    const params = getBlogEntryRouteParams(entry);
     return {
-      params: {
-        slug,
-      },
+      params,
       props: { entry } as Props,
     };
   });
