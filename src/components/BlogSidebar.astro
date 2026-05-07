@@ -52,7 +52,7 @@ const entriesByMonth = blogEntries.reduce<Record<string, typeof blogEntries>>(
         .toSorted(([, a], [, b]) => b.length - a.length)
         .map(([category, entries]) => (
           <li>
-            <a href={`/categories/${category}`}>
+            <a href={`/blog/category/${category}`}>
               {getBlogCategoryDisplayName(category as BlogCategory)}
             </a>
             <span class="list-count">({entries.length})</span>
@@ -70,7 +70,7 @@ const entriesByMonth = blogEntries.reduce<Record<string, typeof blogEntries>>(
         .toSorted(([, a], [, b]) => b.length - a.length)
         .map(([tag, entries]) => (
           <li>
-            <a href={`/tags/${tag}`}>{tag}</a>
+            <a href={`/blog/tag/${tag}`}>{tag}</a>
             <span class="list-count">({entries.length})</span>
           </li>
         ))
