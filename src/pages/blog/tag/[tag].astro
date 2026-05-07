@@ -1,6 +1,7 @@
 ---
 import Pager from "@/components/Pager.astro";
 import BlogEntryIndexLayout from "@/layouts/BlogEntryIndexLayout.astro";
+import { getTagPermalink } from "@/lib/blog-entry-path";
 import { getTagIndexPaths } from "@/lib/paginate-blog";
 import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
 
@@ -21,7 +22,7 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
       <Pager
         currentPage={(Astro.props as Props).currentPage}
         lastPage={(Astro.props as Props).lastPage}
-        urlPrefix={`/blog/tag/${(Astro.props as Props).tag}`}
+        urlPrefix={getTagPermalink((Astro.props as Props).tag)}
       />
     </BlogEntryIndexLayout>
   )

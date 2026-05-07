@@ -1,11 +1,12 @@
 ---
+import { getCategoryPermalink } from "@/lib/blog-entry-path";
 import {
-getUrlFromArticleSource,
-type ArticleSource,
+  getUrlFromArticleSource,
+  type ArticleSource,
 } from "@/models/ArticleSource";
 import {
-getBlogCategoryDisplayName,
-type BlogCategory,
+  getBlogCategoryDisplayName,
+  type BlogCategory,
 } from "@/models/BlogCategory";
 
 export interface Props {
@@ -39,7 +40,7 @@ const icon = (() => {
 }
 {
   category && (
-    <a class="category" href={`/blog/category/${category}`}>
+    <a class="category" href={getCategoryPermalink(category)}>
       <i class="fas fa-folder fa-fw" aria-hidden="true" />
       {getBlogCategoryDisplayName(category)}
     </a>

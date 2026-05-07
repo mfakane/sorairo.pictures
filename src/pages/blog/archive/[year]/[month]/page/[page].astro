@@ -1,6 +1,7 @@
 ---
 import Pager from "@/components/Pager.astro";
 import BlogEntryIndexLayout from "@/layouts/BlogEntryIndexLayout.astro";
+import { getArchivePermalink } from "@/lib/blog-entry-path";
 import { getMonthPagePaths } from "@/lib/paginate-blog";
 import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
 
@@ -21,7 +22,7 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
       <Pager
         currentPage={(Astro.props as Props).page.currentPage}
         lastPage={(Astro.props as Props).page.lastPage}
-        urlPrefix={`/blog/archive/${(Astro.props as Props).year}/${(Astro.props as Props).month}`}
+        urlPrefix={getArchivePermalink((Astro.props as Props).year, (Astro.props as Props).month)}
       />
     </BlogEntryIndexLayout>
   )

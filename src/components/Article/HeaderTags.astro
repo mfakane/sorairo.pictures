@@ -1,4 +1,6 @@
 ---
+import { getTagPermalink } from "@/lib/blog-entry-path";
+
 export interface Props {
   tags: readonly string[];
 }
@@ -11,7 +13,7 @@ const { tags }: Props = Astro.props;
     <ul class="tags">
       {tags.map((tag) => (
         <li>
-          <a href={`/blog/tag/${tag}`}>#{tag}</a>
+          <a href={getTagPermalink(tag)}>#{tag}</a>
         </li>
       ))}
     </ul>

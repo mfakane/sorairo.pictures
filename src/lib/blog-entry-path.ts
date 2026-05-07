@@ -27,3 +27,15 @@ export function getBlogEntryPermalinkFromId(entryId: string): string {
 
   return `/blog/${slug}`;
 }
+
+export function getTagPermalink(tag: string): string {
+  return `/blog/tag/${tag}`;
+}
+
+export function getCategoryPermalink(category: string): string {
+  return `/blog/category/${category}`;
+}
+
+export function getArchivePermalink(year: string, month: string): string {
+  return `/blog/archive/${year}/${month}`;
+}

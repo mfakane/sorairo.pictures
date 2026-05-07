@@ -1,7 +1,8 @@
 ---
+import { getArchivePermalink, getCategoryPermalink, getTagPermalink } from "@/lib/blog-entry-path";
 import {
-getBlogCategoryDisplayName,
-type BlogCategory,
+  getBlogCategoryDisplayName,
+  type BlogCategory,
 } from "@/models/BlogCategory";
 import { getCollection } from "astro:content";
 
@@ -52,7 +53,7 @@ const entriesByMonth = blogEntries.reduce<Record<string, typeof blogEntries>>(
         .toSorted(([, a], [, b]) => b.length - a.length)
         .map(([category, entries]) => (
           <li>
-            <a href={`/blog/category/${category}`}>
+            <a href={getCategoryPermalink(category)}>
               {getBlogCategoryDisplayName(category as BlogCategory)}
             </a>
             <span class="list-count">({entries.length})</span>
@@ -70,7 +71,7 @@ const entriesByMonth = blogEntries.reduce<Record<string, typeof blogEntries>>(
         .toSorted(([, a], [, b]) => b.length - a.length)
         .map(([tag, entries]) => (
           <li>
-            <a href={`/blog/tag/${tag}`}>{tag}</a>
+            <a href={getTagPermalink(tag)}>{tag}</a>
             <span class="list-count">({entries.length})</span>
           </li>
         ))
@@ -85,10 +86,10 @@ const entriesByMonth = blogEntries.reduce<Record<string, typeof blogEntries>>(
       Object.entries(entriesByMonth)
         .toSorted(([a], [b]) => b.localeCompare(a))
         .map(([yearMonth, entries]) => {
-          const [year, month] = yearMonth.split("-");
+          const [year, month] = yearMonth.split("-") as [string, string];
           return (
             <li>
-              <a href={`/blog/archive/${year}/${month}`}>{yearMonth}</a>
+              <a href={getArchivePermalink(year, month)}>{yearMonth}</a>
               <span class="list-count">({entries.length})</span>
             </li>
           );
