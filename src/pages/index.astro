@@ -1,5 +1,6 @@
 ---
 import Article from "@/components/Article.astro";
+import DateTime from "@/components/DateTime.astro";
 import { SITE_TITLE } from "@/config";
 import Layout from "@/layouts/Layout.astro";
 import { getArticleSourceFromUrl } from "@/models/ArticleSource";
@@ -17,7 +18,17 @@ const headlines = (await getCollection("headline"))
     path: x.data.path?.id,
     image: x.data.image,
   }))
-  .sort((a, b) => b.date.valueOf() - a.date.valueOf());
+  .toSorted((a, b) => b.date.valueOf() - a.date.valueOf());
+
+const siteUpdates = (await getCollection("site"))
+  .map((x) => ({
+    title: x.data.title ?? "",
+    category: x.id.split("/").slice(0, -1).join("/"),
+    date: x.data.updated ?? x.data.date,
+    permalink: x.id,
+  }))
+  .toSorted((a, b) => b.date.valueOf() - a.date.valueOf())
+  .slice(0, 5);
 
 const columns = 3;
 ---
@@ -76,6 +87,25 @@ const columns = 3;
           ))
         }
       </div>
+    </article>
+    <article>
+      <h2>更新履歴</h2>
+      <ul class="article-title-list">
+        {
+          siteUpdates.map((update) => (
+            <li class="article-title">
+              <DateTime date={update.date} />
+              <a class="title" href={`/${update.permalink}`}>
+                {update.title}
+              </a>
+              <a class="category" href={`/${update.category}`}>
+                <i class="fas fa-folder fa-fw" aria-hidden="true" />
+                {update.category}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </article>
   </main>
 </Layout>

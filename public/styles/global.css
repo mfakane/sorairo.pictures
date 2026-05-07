@@ -424,6 +424,23 @@ ul.tags li {
     line-height: inherit;
 }
 
+ul.article-title-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    gap: 4px;
+}
+
+ul.article-title-list li {
+    margin: 0;
+    padding: 0;
+}
+
+ul.article-title-list li a.title:not(:hover, :active) {
+  color: #333333;
+}
+
 article footer {
     margin-top: 16px;
 }
