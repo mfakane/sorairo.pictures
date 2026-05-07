@@ -3,7 +3,12 @@ import Article from "@/components/Article.astro";
 import DateTime from "@/components/DateTime.astro";
 import { SITE_TITLE } from "@/config";
 import Layout from "@/layouts/Layout.astro";
+import {
+  getBlogEntryPermalink,
+  getCategoryPermalink,
+} from "@/lib/blog-entry-path";
 import { getArticleSourceFromUrl } from "@/models/ArticleSource";
+import { getBlogCategoryDisplayName } from "@/models/BlogCategory";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import Portrait from "./about/fumika.jpg";
@@ -25,8 +30,23 @@ const siteUpdates = (await getCollection("site"))
     title: x.data.title ?? "",
     category: x.id.split("/").slice(0, -1).join("/"),
     date: x.data.updated ?? x.data.date,
-    permalink: x.id,
+    permalink: `/${x.id}`,
   }))
+  .map((x) => ({
+    ...x,
+    category: { name: x.category, path: `/${x.category}/` },
+  }));
+const blogUpdates = (await getCollection("blog")).map((x) => ({
+  title: x.data.title ?? "",
+  category: {
+    name: getBlogCategoryDisplayName(x.data.category),
+    path: getCategoryPermalink(x.data.category),
+  },
+  date: x.data.updated ?? x.data.date,
+  permalink: getBlogEntryPermalink(x),
+}));
+
+const mergedUpdates = [...siteUpdates, ...blogUpdates]
   .toSorted((a, b) => b.date.valueOf() - a.date.valueOf())
   .slice(0, 5);
 
@@ -92,15 +112,15 @@ const columns = 3;
       <h2>更新履歴</h2>
       <ul class="article-title-list">
         {
-          siteUpdates.map((update) => (
+          mergedUpdates.map((update) => (
             <li class="article-title">
               <DateTime date={update.date} />
-              <a class="title" href={`/${update.permalink}`}>
+              <a class="title" href={update.permalink}>
                 {update.title}
               </a>
-              <a class="category" href={`/${update.category}`}>
+              <a class="category" href={update.category.path}>
                 <i class="fas fa-folder fa-fw" aria-hidden="true" />
-                {update.category}
+                {update.category.name}
               </a>
             </li>
           ))
