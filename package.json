@@ -13,23 +13,23 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@astrojs/mdx": "^7.0.0",
+    "@astrojs/mdx": "^7.0.5",
     "@remark-embedder/core": "^3.0.3",
     "@remark-embedder/transformer-oembed": "^5.0.1",
-    "astro": "^7.0.0",
-    "astro-font": "^1.0.0",
+    "astro": "^7.2.0",
+    "astro-font": "^1.1.0",
     "astro-relative-links": "^0.4.2",
     "jsdom": "^30.0.1",
     "mdast-util-directive": "^3.1.0",
     "mdast-util-find-and-replace": "^3.0.2",
-    "rehype-og-card": "^3.1.5",
+    "rehype-og-card": "^3.1.13",
     "remark-behead": "^3.1.0",
     "remark-breaks": "^4.0.0",
     "remark-directive": "^4.0.0"
   },
   "devDependencies": {
     "@types/jsdom": "^30.0.0",
-    "@types/node": "^24.0.0",
-    "typescript": "^7.0.0"
+    "@types/node": "^26.2.0",
+    "typescript": "^7.0.2"
   }
 }
