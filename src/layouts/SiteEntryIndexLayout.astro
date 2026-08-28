@@ -30,6 +30,11 @@ articles.sort((x, y) =>
           date={article.data.date}
           updated={article.data.updated}
           permalink={`/${article.slug}`}
+          image={
+            typeof article.data.image === "string"
+              ? article.data.image
+              : article.data.image?.src
+          }
         >
           <h1 slot="title">
             <a href={`/${article.slug}`}>{article.data.title}</a>

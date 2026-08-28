@@ -42,6 +42,11 @@ const headingsWithChildren = headings.reduce<MarkdownHeadingWithChildren[]>(
       updated={entry.data.updated}
       category={entry.data.category}
       tags={entry.data.tags ?? []}
+      image={
+        typeof entry.data.image === "string"
+          ? entry.data.image
+          : entry.data.image?.src
+      }
     >
       <h1 slot="title">{entry.data.title}</h1>
       <Content />

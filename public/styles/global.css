@@ -357,6 +357,8 @@ article header.with-image {
         / 1fr;
     border-radius: 8px;
     overflow: hidden;
+    max-height: 256px;
+    text-shadow: 0 1px 8px black;
 }
 
 article header.with-image img {

@@ -5,11 +5,16 @@ import { defineCollection, reference } from "astro:content";
 
 const blogCollection = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: "./src/content/blog" }),
-  schema: () =>
+  schema: ({ image }) =>
     z.object({
       title: z.string(),
       date: z.coerce.date(),
       updated: z.coerce.date().optional(),
+      image: z.union([
+        image(),
+        z.url(),
+      ])
+        .optional(),
       tags: z.array(z.string()).optional(),
       category: z.enum(["diary", "kb", "notice", "review"] as const satisfies BlogCategory[]),
     }),
@@ -22,6 +27,11 @@ const siteCollection = defineCollection({
       title: z.string(),
       date: z.coerce.date(),
       updated: z.coerce.date().optional(),
+      image: z.union([
+        image(),
+        z.url(),
+      ])
+        .optional(),
       portrait: z
         .union([
           image(),
