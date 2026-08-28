@@ -1,5 +1,6 @@
 ---
 title: wasm-fcs
+image: ./screenshot.png
 date: 2026-08-28 00:00:00
 updated: 2026-08-28 00:00:00
 ---
