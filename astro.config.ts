@@ -1,5 +1,5 @@
-import type { RemarkPlugin } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
+import { unified, type RemarkPlugin } from "@astrojs/markdown-remark";
 import fauxRemarkEmbedder from "@remark-embedder/core";
 import fauxOembedTransformer, { type Config } from "@remark-embedder/transformer-oembed";
 import relativeLinks from "astro-relative-links";
@@ -39,28 +39,30 @@ const defaultLayoutPlugin: RemarkPlugin = () =>
 export default defineConfig({
   site: "https://sorairo.pictures/",
   markdown: {
-    remarkPlugins: [
-      defaultLayoutPlugin,
-      remarkMarkdownLinks,
-      remarkFa,
-      remarkBreaks,
-      remarkDownload,
-      remarkDirective,
-      [remarkEmbedder as RemarkPlugin, {
-        transformers: [
-          [oembedTransformer, { params: { dnt: true, omit_script: true } } as Config]
-        ]
-      } as Parameters<typeof remarkEmbedder>[0]],
-      [remarkBehead, { minDepth: 2 } as Parameters<typeof remarkBehead>[0]]
-    ],
-    rehypePlugins: [
-      rehypeImgProps,
-      rehypeFigure,
-      [rehypeOGCard, {
-        buildCache: true,
-        enableSameTextURLConversion: true
-      } as RehypeOGCardOptions]
-    ]
+    processor: unified({
+      remarkPlugins: [
+        defaultLayoutPlugin,
+        remarkMarkdownLinks,
+        remarkFa,
+        remarkBreaks,
+        remarkDownload,
+        remarkDirective,
+        [remarkEmbedder as RemarkPlugin, {
+          transformers: [
+            [oembedTransformer, { params: { dnt: true, omit_script: true } } as Config]
+          ]
+        } as Parameters<typeof remarkEmbedder>[0]],
+        [remarkBehead, { minDepth: 2 } as Parameters<typeof remarkBehead>[0]]
+      ],
+      rehypePlugins: [
+        rehypeImgProps,
+        rehypeFigure,
+        [rehypeOGCard, {
+          buildCache: true,
+          enableSameTextURLConversion: true
+        } as RehypeOGCardOptions]
+      ]
+    })
   },
   integrations: [mdx(), relativeLinks()],
   prefetch: {
