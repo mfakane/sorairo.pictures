@@ -1,4 +1,4 @@
-export type BlogCategory = "diary" | "kb" | "notice" | "review";
+export type BlogCategory = "diary" | "kb" | "notice" | "review" | "dempa";
 
 export function getBlogCategoryDisplayName(category: BlogCategory) {
   switch (category) {
@@ -10,5 +10,7 @@ export function getBlogCategoryDisplayName(category: BlogCategory) {
       return "Notice";
     case "review":
       return "Review";
+    case "dempa":
+      return "Dempa";
   }
 }
