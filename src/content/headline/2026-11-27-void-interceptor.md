@@ -6,4 +6,4 @@ image: ../site/apps/void-interceptor/screenshot.webp
 href: https://void-interceptor.mfakane.me/
 ---
 
-慣性を、制せ。エンジンを切って機首を振り、ドリフトとブーストで艦隊戦を切り抜ける、ブラウザ向けの3Dシューティングです。
+慣性を、制せ。エンジンを切って機首を振り、ドリフトとブーストで艦隊戦を切り抜ける、ブラウザ向けの 3D シューティングです。
