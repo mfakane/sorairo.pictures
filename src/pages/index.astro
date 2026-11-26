@@ -24,7 +24,7 @@ const headlines = (await getCollection("headline"))
     image: x.data.image,
   }))
   .toSorted((a, b) => b.date.valueOf() - a.date.valueOf())
-  .slice(0, 6);
+  .slice(0, 8);
 
 const siteUpdates = (await getCollection("site"))
   .map((x) => ({
@@ -92,7 +92,7 @@ const columns = 3;
                     }
                   >
                     <h3 slot="title">
-                      <a href={post.path ? post.path : post.permalink}>
+                      <a href={post.path ? `/${post.path}/` : post.permalink}>
                         {post.title}
                       </a>
                     </h3>
