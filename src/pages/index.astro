@@ -24,7 +24,7 @@ const headlines = (await getCollection("headline"))
     image: x.data.image,
   }))
   .toSorted((a, b) => b.date.valueOf() - a.date.valueOf())
-  .slice(0, 8);
+  .slice(0, 9);
 
 const siteUpdates = (await getCollection("site"))
   .map((x) => ({
