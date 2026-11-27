@@ -15,6 +15,7 @@ import Portrait from "./about/fumika.jpg";
 
 const headlines = (await getCollection("headline"))
   .map((x) => ({
+    id: x.id,
     title: x.data.title ?? "",
     date: x.data.date,
     permalink: x.data.href,
@@ -23,7 +24,10 @@ const headlines = (await getCollection("headline"))
     path: x.data.path?.id,
     image: x.data.image,
   }))
-  .toSorted((a, b) => b.date.valueOf() - a.date.valueOf())
+  .toSorted((a, b) =>
+    b.date.valueOf() - a.date.valueOf() ||
+    (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)
+  )
   .slice(0, 9);
 
 const siteUpdates = (await getCollection("site"))
@@ -50,8 +54,6 @@ const blogUpdates = (await getCollection("blog")).map((x) => ({
 const mergedUpdates = [...siteUpdates, ...blogUpdates]
   .toSorted((a, b) => b.date.valueOf() - a.date.valueOf())
   .slice(0, 5);
-
-const columns = 3;
 ---
 
 <Layout title={SITE_TITLE}>
@@ -76,34 +78,31 @@ const columns = 3;
       <h2>最近つくったもの</h2>
       <div class="showcase">
         {
-          [...Array(columns)].map((_, column) => (
-            <div class="showcase-column">
-              {headlines
-                .filter((_, i) => i % columns === column)
-                .map((post) => (
-                  <Article
-                    date={post.date}
-                    permalink={post.permalink}
-                    source={post.source}
-                    image={
-                      typeof post.image === "string"
-                        ? post.image
-                        : post.image?.src
-                    }
-                  >
-                    <h3 slot="title">
-                      <a href={post.path ? `/${post.path}/` : post.permalink}>
-                        {post.title}
-                      </a>
-                    </h3>
-                    {post.permalink && (
-                      <a slot="footer" href={post.permalink}>
-                        詳細 →
-                      </a>
-                    )}
-                    <Fragment set:html={post.summary} />
-                  </Article>
-                ))}
+          headlines.map((post) => (
+            <Article
+              date={post.date}
+              permalink={post.permalink}
+              source={post.source}
+              image={
+                typeof post.image === "string"
+                  ? post.image
+                  : post.image?.src
+              }
+            >
+              <h3 slot="title">
+                <a href={post.path ? `/${post.path}/` : post.permalink}>
+                  {post.title}
+                </a>
+              </h3>
+              {post.permalink && (
+                <a slot="footer" href={post.permalink}>
+                  詳細 →
+                </a>
+              )}
+              <Fragment set:html={post.summary} />
+            </Article>
+          )
+          ))}
             </div>
           ))
         }
@@ -130,3 +129,37 @@ const columns = 3;
     </article>
   </main>
 </Layout>
+
+<script>
+  const showcase = document.querySelector<HTMLElement>(".showcase");
+  if (showcase && typeof ResizeObserver !== "undefined") {
+    const cards = Array.from(showcase.querySelectorAll<HTMLElement>(":scope > article"));
+    const wide = matchMedia("(orientation: landscape) and (min-width: 601px)");
+    let frame = 0;
+    const layout = () => {
+      frame = 0;
+      if (!wide.matches) {
+        showcase.classList.remove("masonry");
+        return;
+      }
+      const heights = cards.map(card => Math.ceil(card.getBoundingClientRect().height));
+      const next = [1, 1, 1];
+      cards.forEach((card, i) => {
+        const column = i % 3;
+        const span = Math.max(1, heights[i]);
+        card.style.setProperty("--column", String(column + 1));
+        card.style.setProperty("--row", String(next[column]));
+        card.style.setProperty("--span", String(span));
+        next[column] += span + 32;
+      });
+      showcase.classList.add("masonry");
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(layout);
+    };
+    const observer = new ResizeObserver(schedule);
+    cards.forEach(card => observer.observe(card, { box: "border-box" }));
+    wide.addEventListener("change", schedule);
+    schedule();
+  }
+</script>
