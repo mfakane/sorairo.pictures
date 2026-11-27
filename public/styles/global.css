@@ -281,9 +281,21 @@ body>aside .sticky {
 
 .showcase {
     display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
     gap: 32px;
+}
+
+@media screen and (orientation: landscape) and (min-width: 601px) {
+    .showcase.masonry {
+        grid-auto-rows: 1px;
+        row-gap: 0;
+    }
+
+    .showcase.masonry > article {
+        grid-column: var(--column);
+        grid-row: var(--row) / span var(--span);
+    }
 }
 
 .showcase article {
@@ -315,15 +327,30 @@ body>aside .sticky {
     margin-top: 0;
 }
 
-.showcase-column article:first-child {
+.showcase > article {
+    min-width: 0;
+    margin: 0;
+}
+
+.showcase > article + article {
     margin-top: 0;
+}
+
+.showcase > article:nth-child(-n+3) {
+    padding-top: 0;
+    border-top: none;
+}
+
+.showcase > article:nth-child(n+4) {
+    padding-top: 32px;
+    border-top: 1px solid;
 }
 
 article {
     margin: 16px 0;
 }
 
-article+:is(article, #related) {
+article+:is(article, #related):not(.showcase > article) {
     margin-top: 32px;
     padding-top: 32px;
     border-top: 1px solid;
@@ -586,16 +613,19 @@ nav.pager .current {
     color: #808080;
 }
 
-@media screen and (orientation: portrait) {
+@media screen and (orientation: portrait),
+       screen and (max-width: 600px) {
     .showcase {
-        grid-auto-flow: row;
-        grid-auto-columns: auto;
+        grid-template-columns: minmax(0, 1fr);
     }
 
-    .showcase-column + .showcase-column {
+    .showcase > article:nth-child(n+2) {
         padding-top: 32px;
         border-top: 1px solid;
     }
+}
+
+@media screen and (orientation: portrait) {
 
     body>footer nav {
         display: grid;
